@@ -1,0 +1,37 @@
+{
+  "name": "@gmussi-contracts/solidity-voting",
+  "version": "0.0.1",
+  "description": "A smart contract that allows creation of polls and voting on them",
+  "files": [
+    "/contracts/**/*.sol",
+    "/build/contracts/*.json"
+  ],
+  "scripts": {
+    "compile": "truffle compile-all",
+    "test": "truffle test",
+    "gui": "node gui/run.js",
+    "publish": "npm publish --access=public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gmussi/solidity-voting.git"
+  },
+  "keywords": [
+    "solidity",
+    "ethereum",
+    "dapp",
+    "voting",
+    "blockchain",
+    "smart",
+    "contracts"
+  ],
+  "author": "Guilherme Mussi <gmussi@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gmussi/solidity-voting/issues"
+  },
+  "homepage": "https://github.com/gmussi/solidity-voting#readme",
+  "dependencies": {
+    "@gmussi-contracts/gmussi-claimable": "^1.0.0"
+  }
+}
