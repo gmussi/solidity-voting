@@ -1,0 +1,2308 @@
+{
+    "contractName": "PollingStation",
+    "abi": [
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "claimer",
+                    "type": "address"
+                }
+            ],
+            "name": "ClaimerAdded",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "claimer",
+                    "type": "address"
+                }
+            ],
+            "name": "ClaimerRemoved",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "oldExpiration",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "newExpiration",
+                    "type": "uint256"
+                }
+            ],
+            "name": "ExpirationUpdated",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "previousOwner",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "newOwner",
+                    "type": "address"
+                }
+            ],
+            "name": "OwnershipTransferred",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "creator",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "uint256",
+                    "name": "pollId",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "pollAddr",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "name",
+                    "type": "string"
+                }
+            ],
+            "name": "PollCreated",
+            "type": "event"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_claimer",
+                    "type": "address"
+                }
+            ],
+            "name": "addClaimer",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [],
+            "name": "claim",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "pollId",
+                    "type": "uint256"
+                }
+            ],
+            "name": "closePoll",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "internalType": "string",
+                    "name": "_name",
+                    "type": "string"
+                },
+                {
+                    "internalType": "bytes32[]",
+                    "name": "_options",
+                    "type": "bytes32[]"
+                }
+            ],
+            "name": "createPoll",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "debugnow",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "getBalance",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "getExpirationTime",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "getMyPolls",
+            "outputs": [
+                {
+                    "internalType": "uint256[]",
+                    "name": "",
+                    "type": "uint256[]"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "isClaimable",
+            "outputs": [
+                {
+                    "internalType": "bool",
+                    "name": "",
+                    "type": "bool"
+                },
+                {
+                    "internalType": "bool",
+                    "name": "",
+                    "type": "bool"
+                },
+                {
+                    "internalType": "bool",
+                    "name": "",
+                    "type": "bool"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_claimer",
+                    "type": "address"
+                }
+            ],
+            "name": "isClaimer",
+            "outputs": [
+                {
+                    "internalType": "bool",
+                    "name": "",
+                    "type": "bool"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "isOwner",
+            "outputs": [
+                {
+                    "internalType": "bool",
+                    "name": "",
+                    "type": "bool"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "owner",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "name": "polls",
+            "outputs": [
+                {
+                    "internalType": "contract Poll",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "read",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "bool",
+                    "name": "",
+                    "type": "bool"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_claimer",
+                    "type": "address"
+                }
+            ],
+            "name": "removeClaimer",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [],
+            "name": "renounceOwnership",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "_expirationTime",
+                    "type": "uint256"
+                }
+            ],
+            "name": "setExpirationTime",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "newOwner",
+                    "type": "address"
+                }
+            ],
+            "name": "transferOwnership",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }
+    ],
+    "metadata": "{\"compiler\":{\"version\":\"0.5.16+commit.9c3226ce\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"claimer\",\"type\":\"address\"}],\"name\":\"ClaimerAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"claimer\",\"type\":\"address\"}],\"name\":\"ClaimerRemoved\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"oldExpiration\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"newExpiration\",\"type\":\"uint256\"}],\"name\":\"ExpirationUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"pollId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"pollAddr\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"}],\"name\":\"PollCreated\",\"type\":\"event\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"_claimer\",\"type\":\"address\"}],\"name\":\"addClaimer\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"claim\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"pollId\",\"type\":\"uint256\"}],\"name\":\"closePoll\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"string\",\"name\":\"_name\",\"type\":\"string\"},{\"internalType\":\"bytes32[]\",\"name\":\"_options\",\"type\":\"bytes32[]\"}],\"name\":\"createPoll\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"debugnow\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getBalance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getExpirationTime\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getMyPolls\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"isClaimable\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"internalType\":\"address\",\"name\":\"_claimer\",\"type\":\"address\"}],\"name\":\"isClaimer\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"isOwner\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"polls\",\"outputs\":[{\"internalType\":\"contract Poll\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"read\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"_claimer\",\"type\":\"address\"}],\"name\":\"removeClaimer\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_expirationTime\",\"type\":\"uint256\"}],\"name\":\"setExpirationTime\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{\"addClaimer(address)\":{\"params\":{\"_claimer\":\"address of the claimer to be added\"}},\"getExpirationTime()\":{\"return\":\"uint with the expiration time\"},\"isClaimable()\":{\"details\":\"The contract is claimable when the 3 results are true.\",\"return\":\"bool: is a claimer, bool: is expired, bool: is not owner\"},\"isClaimer(address)\":{\"params\":{\"_claimer\":\"address to verify\"},\"return\":\"true if the caller has been added as claimer, false, otherwise\"},\"isOwner()\":{\"return\":\"true if `msg.sender` is the owner of the contract.\"},\"owner()\":{\"return\":\"the address of the owner.\"},\"read()\":{\"return\":\"(address: owner of this contract, uint: the expiration date, bool: is caller a claimers?)\"},\"removeClaimer(address)\":{\"params\":{\"_claimer\":\"address of the claimer to be removed\"}},\"renounceOwnership()\":{\"details\":\"Allows the current owner to relinquish control of the contract.\"},\"setExpirationTime(uint256)\":{\"params\":{\"_expirationTime\":\"the new expiration time for this contract\"}},\"transferOwnership(address)\":{\"details\":\"Allows the current owner to transfer control of the contract to a newOwner.\",\"params\":{\"newOwner\":\"The address to transfer ownership to.\"}}}},\"userdoc\":{\"methods\":{\"addClaimer(address)\":{\"notice\":\"Adds a new claimer to the contract\"},\"claim()\":{\"notice\":\"Claim ownership of the contract, once the max inactive time is reached.  Only addresses in claimers can claim, unless the array is empty.\"},\"getExpirationTime()\":{\"notice\":\"Gets the current expiration time set in this contract\"},\"isClaimable()\":{\"notice\":\"Checks if the expiration date is passed and contract can be claimed.\"},\"isClaimer(address)\":{\"notice\":\"returns true if the caller has been added as claimer on this contract\"},\"read()\":{\"notice\":\"returns the owner of this contract, the expiration date and if the caller is one of the claimers\"},\"removeClaimer(address)\":{\"notice\":\"Removes a claimer from the contract\"},\"renounceOwnership()\":{\"notice\":\"Renouncing to ownership will leave the contract without an owner. It will not be possible to call the functions with the `onlyOwner` modifier anymore.\"},\"setExpirationTime(uint256)\":{\"notice\":\"allows the owner to set a new expiration time to extend the ownership of this contract\"}},\"notice\":\"This contract allows for the creation and management of Polls\"}},\"settings\":{\"compilationTarget\":{\"c:/Users/Guilherme Mussi/git/solidity-voting/contracts/PollingStation.sol\":\"PollingStation\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"c:/Users/Guilherme Mussi/git/solidity-voting/contracts/Poll.sol\":{\"keccak256\":\"0xb4fbf8e38a438d29e0d2ea4dd59e3e1ca5cf1a9cd6e356fdddeb8fa8fda9d40f\",\"urls\":[\"bzz-raw://648e1d86f04f7346f72b7ad7ac1ad28db20691120daa44eaaa6254700e32e54a\",\"dweb:/ipfs/QmNcD5ypWR2rqT67YXFArVtmUAVZ9QJAEvmM6TMybSNYgp\"]},\"c:/Users/Guilherme Mussi/git/solidity-voting/contracts/PollingStation.sol\":{\"keccak256\":\"0x19ab2d1daf79314b1ef88e00220a5f523c47ceed173601097803673217ad01a9\",\"urls\":[\"bzz-raw://a099cef30c6697528042d447ff42a8cc472793bdeb8b5669c656cfe30a09312c\",\"dweb:/ipfs/QmPNu3RcKFHF8ydz5VcypGobAChHiyuj1vCmC6zwpsuoEo\"]},\"c:/Users/Guilherme Mussi/git/solidity-voting/node_modules/@gmussi-contracts/gmussi-claimable/contracts/Claimable.sol\":{\"keccak256\":\"0xab82ae6e842f054c461d255983aa378db932d67a9eb5903daaadfca204d09e98\",\"urls\":[\"bzz-raw://4013755d13fbccfb1fc6536a36a5bc148e67c700e1162621dfd5f651a16fc480\",\"dweb:/ipfs/QmSLuCvpwHrCBCoN3oaZDEA9szuBzF7BGhy92C2cfFRpxF\"]},\"c:/Users/Guilherme Mussi/git/solidity-voting/node_modules/@gmussi-contracts/gmussi-claimable/contracts/Ownable.sol\":{\"keccak256\":\"0x4144486887fa7f998f0759de5a0647475729e2fa88110c442dafd38d8cb06c40\",\"urls\":[\"bzz-raw://22ba5fe3c1c1ef94d71ebee14a36f1e787c494a6a13ba0450325f4273a8faf76\",\"dweb:/ipfs/QmfFJGrQFFfYrB2wwGJRyv51uqjL1ZCYqSyGH61mBbe9V3\"]}},\"version\":1}",
+    "bytecode": "60806040819052600080546001600160a01b03191633178082556001600160a01b0316917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908290a3611d06806100576000396000f3fe60806040523480156200001157600080fd5b50600436106200012f5760003560e01c80638da5cb5b11620000b1578063c0cc365d116200007b578063c0cc365d146200044c578063e1aa071c146200046c578063e23a845a1462000476578063f0490b8a1462000480578063f2fde38b14620004a9576200012f565b80638da5cb5b14620003dc5780638f32d59b14620004025780639534e637146200040c578063ac2f0074146200042c576200012f565b80632ea6640111620000ff5780632ea66401146200033d5780634e71d92d146200036857806357de26a41462000372578063715018a614620003a657806374478bb314620003b0576200012f565b8062f63722146200013457806310a8aecd146200028857806312065fe014620002c5578063170b5add14620002e1575b600080fd5b62000267600480360360408110156200014c57600080fd5b8101906020810181356401000000008111156200016857600080fd5b8201836020820111156200017b57600080fd5b803590602001918460018302840111640100000000831117156200019e57600080fd5b91908080601f0160208091040260200160405190810160405280939291908181526020018383808284376000920191909152509295949360208101935035915050640100000000811115620001f257600080fd5b8201836020820111156200020557600080fd5b803590602001918460208302840111640100000000831117156200022857600080fd5b919080806020026020016040519081016040528093929190818152602001838360200280828437600092019190915250929550620004d2945050505050565b604080519283526001600160a01b0390911660208301528051918290030190f35b620002b160048036036020811015620002a057600080fd5b50356001600160a01b031662000736565b604080519115158252519081900360200190f35b620002cf62000754565b60408051918252519081900360200190f35b620002eb6200076f565b60408051602080825283518183015283519192839290830191858101910280838360005b83811015620003295781810151838201526020016200030f565b505050509050019250505060405180910390f35b62000366600480360360208110156200035557600080fd5b50356001600160a01b0316620007d2565b005b620003666200085c565b6200037c620008a2565b604080516001600160a01b0390941684526020840192909252151582820152519081900360600190f35b62000366620008ca565b620003ba62000928565b6040805193151584529115156020840152151582820152519081900360600190f35b620003e662000953565b604080516001600160a01b039092168252519081900360200190f35b620002b162000962565b62000366600480360360208110156200042457600080fd5b503562000973565b620003e6600480360360208110156200044457600080fd5b503562000a92565b62000366600480360360208110156200046457600080fd5b503562000aba565b620002cf62000b15565b620002cf62000b19565b62000366600480360360208110156200049857600080fd5b50356001600160a01b031662000b1f565b6200036660048036036020811015620004c157600080fd5b50356001600160a01b031662000ba2565b60008060008484604051620004e79062000c33565b604080825283519082015282518190602080830191606084019187019080838360005b83811015620005245781810151838201526020016200050a565b50505050905090810190601f168015620005525780820380516001836020036101000a031916815260200191505b508381038252845181528451602091820191808701910280838360005b83811015620005895781810151838201526020016200056f565b50505050905001945050505050604051809103906000f080158015620005b3573d6000803e3d6000fd5b50600380546001808201928390557fc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85b90910180546001600160a01b0319166001600160a01b03851690811790915533600081815260046020908152604080832080549687018155835281832090950186905584518181528c51818301528c5197985095969395879593947f7ea57775055a1d04b0e99841ebddb0a6bf8ca4d1b0474329fdd201c5d3ac6c57948e949293849391840192908601918190849084905b838110156200068e57818101518382015260200162000674565b50505050905090810190601f168015620006bc5780820380516001836020036101000a031916815260200191505b509250505060405180910390a46040805163f2fde38b60e01b815233600482015290516001600160a01b0384169163f2fde38b91602480830192600092919082900301818387803b1580156200071157600080fd5b505af115801562000726573d6000803e3d6000fd5b5092989397509295505050505050565b6001600160a01b031660009081526001602052604090205460ff1690565b60006200076062000962565b6200076a57600080fd5b504790565b33600090815260046020908152604091829020805483518184028101840190945280845260609392830182828015620007c857602002820191906000526020600020905b815481526020019060010190808311620007b3575b5050505050905090565b620007dc62000962565b620007e657600080fd5b6001600160a01b03811660009081526001602052604090205460ff16156200080d57600080fd5b6001600160a01b0381166000818152600160208190526040808320805460ff1916909217909155517fff9a8f4e0a39755c20c899b46171e470382709479fce2aa1e388f95edfe017399190a250565b620008673362000736565b6200087157600080fd5b60025442116200088057600080fd5b6200088a62000962565b156200089557600080fd5b620008a03362000bc4565b565b6000806000620008b162000953565b600254620008bf3362000736565b925092509250909192565b620008d462000962565b620008de57600080fd5b600080546040516001600160a01b03909116907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908390a3600080546001600160a01b0319169055565b6000806000620009383362000736565b60025442116200094762000962565b15925092509250909192565b6000546001600160a01b031690565b6000546001600160a01b0316331490565b80336001600160a01b0316600382815481106200098c57fe5b6000918252602091829020015460408051638da5cb5b60e01b815290516001600160a01b0390921692638da5cb5b92600480840193829003018186803b158015620009d657600080fd5b505afa158015620009eb573d6000803e3d6000fd5b505050506040513d602081101562000a0257600080fd5b50516001600160a01b03161462000a1857600080fd5b60006003838154811062000a2857fe5b60009182526020822001546040805163ed8c2aed60e01b815290516001600160a01b039092169350839263ed8c2aed9260048084019382900301818387803b15801562000a7457600080fd5b505af115801562000a89573d6000803e3d6000fd5b50505050505050565b6003818154811062000aa057fe5b6000918252602090912001546001600160a01b0316905081565b62000ac462000962565b62000ace57600080fd5b6002805490829055604080518281526020810184905281517f48bd2ad49200e0ca36b95736b1b720e3a4db1eb87715905a0242d11e90fcf176929181900390910190a15050565b4290565b60025490565b62000b2962000962565b62000b3357600080fd5b6001600160a01b03811660009081526001602052604090205460ff1662000b5957600080fd5b6001600160a01b038116600081815260016020526040808220805460ff19169055517f30acaa541089592567cd4ce36437c68778a43e66dc1a9e7031e4496faf4593259190a250565b62000bac62000962565b62000bb657600080fd5b62000bc18162000bc4565b50565b6001600160a01b03811662000bd857600080fd5b600080546040516001600160a01b03808516939216917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a3600080546001600160a01b0319166001600160a01b0392909216919091179055565b6110908062000c428339019056fe60806040523480156200001157600080fd5b506040516200109038038062001090833981810160405260408110156200003757600080fd5b81019080805160405193929190846401000000008211156200005857600080fd5b9083019060208201858111156200006e57600080fd5b82516401000000008111828201881017156200008957600080fd5b82525081516020918201929091019080838360005b83811015620000b85781810151838201526020016200009e565b50505050905090810190601f168015620000e65780820380516001836020036101000a031916815260200191505b50604052602001805160405193929190846401000000008211156200010a57600080fd5b9083019060208201858111156200012057600080fd5b82518660208202830111640100000000821117156200013e57600080fd5b82525081516020918201928201910280838360005b838110156200016d57818101518382015260200162000153565b50505050919091016040819052600080546001600160a01b03191633178082556001600160a01b0316955093507f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09250839150a36000815111620001d057600080fd5b8151620001e590600390602085019062000263565b5060005b81518110156200025a5760048282815181106200020257fe5b6020908102919091018101518254600181018455600093845291832090910155825160059082908590859081106200023657fe5b602090810291909101810151825281019190915260400160002055600101620001e9565b50505062000308565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f10620002a657805160ff1916838001178555620002d6565b82800160010185558215620002d6579182015b82811115620002d6578251825591602001919060010190620002b9565b50620002e4929150620002e8565b5090565b6200030591905b80821115620002e45760008155600101620002ef565b90565b610d7880620003186000396000f3fe6080604052600436106101355760003560e01c80638da5cb5b116100ab578063df1edbe81161006f578063df1edbe81461049c578063e1aa071c146104c2578063e23a845a146104d7578063ed8c2aed146104ec578063f0490b8a14610501578063f2fde38b1461053457610135565b80638da5cb5b146103945780638f32d59b146103c5578063b31e1d4d146103da578063c0cc365d1461040d578063cc2ee1961461043757610135565b806357de26a4116100fd57806357de26a414610291578063597e1fb5146102d0578063715018a6146102e557806374478bb3146102fa57806381d0e37b146103315780638d8afd3d1461035b57610135565b806306fdde031461013a57806310a8aecd146101c45780632ea664011461020b578063409e2205146102405780634e71d92d1461027c575b600080fd5b34801561014657600080fd5b5061014f610567565b6040805160208082528351818301528351919283929083019185019080838360005b83811015610189578181015183820152602001610171565b50505050905090810190601f1680156101b65780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b3480156101d057600080fd5b506101f7600480360360208110156101e757600080fd5b50356001600160a01b03166105f5565b604080519115158252519081900360200190f35b34801561021757600080fd5b5061023e6004803603602081101561022e57600080fd5b50356001600160a01b0316610613565b005b34801561024c57600080fd5b5061026a6004803603602081101561026357600080fd5b5035610699565b60408051918252519081900360200190f35b34801561028857600080fd5b5061023e6106b7565b34801561029d57600080fd5b506102a66106f4565b604080516001600160a01b0390941684526020840192909252151582820152519081900360600190f35b3480156102dc57600080fd5b506101f7610718565b3480156102f157600080fd5b5061023e610721565b34801561030657600080fd5b5061030f61077c565b6040805193151584529115156020840152151582820152519081900360600190f35b34801561033d57600080fd5b5061026a6004803603602081101561035457600080fd5b50356107a3565b34801561036757600080fd5b5061023e6004803603604081101561037e57600080fd5b50803590602001356001600160a01b03166107b5565b3480156103a057600080fd5b506103a96108a3565b604080516001600160a01b039092168252519081900360200190f35b3480156103d157600080fd5b506101f76108b2565b3480156103e657600080fd5b5061023e600480360360208110156103fd57600080fd5b50356001600160a01b03166108c3565b34801561041957600080fd5b5061023e6004803603602081101561043057600080fd5b50356109bd565b34801561044357600080fd5b5061044c610a15565b60408051602080825283518183015283519192839290830191858101910280838360005b83811015610488578181015183820152602001610470565b505050509050019250505060405180910390f35b61023e600480360360208110156104b257600080fd5b50356001600160a01b0316610a6d565b3480156104ce57600080fd5b5061026a610bcc565b3480156104e357600080fd5b5061026a610bd0565b3480156104f857600080fd5b5061023e610bd6565b34801561050d57600080fd5b5061023e6004803603602081101561052457600080fd5b50356001600160a01b0316610c39565b34801561054057600080fd5b5061023e6004803603602081101561055757600080fd5b50356001600160a01b0316610cb8565b6003805460408051602060026001851615610100026000190190941693909304601f810184900484028201840190925281815292918301828280156105ed5780601f106105c2576101008083540402835291602001916105ed565b820191906000526020600020905b8154815290600101906020018083116105d057829003601f168201915b505050505081565b6001600160a01b031660009081526001602052604090205460ff1690565b61061b6108b2565b61062457600080fd5b6001600160a01b03811660009081526001602052604090205460ff161561064a57600080fd5b6001600160a01b0381166000818152600160208190526040808320805460ff1916909217909155517fff9a8f4e0a39755c20c899b46171e470382709479fce2aa1e388f95edfe017399190a250565b600481815481106106a657fe5b600091825260209091200154905081565b6106c0336105f5565b6106c957600080fd5b60025442116106d757600080fd5b6106df6108b2565b156106e957600080fd5b6106f233610cd5565b565b60008060006107016108a3565b60025461070d336105f5565b925092509250909192565b60075460ff1681565b6107296108b2565b61073257600080fd5b600080546040516001600160a01b03909116907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908390a3600080546001600160a01b0319169055565b600080600061078a336105f5565b60025442116107976108b2565b15925092509250909192565b60056020526000908152604090205481565b6001600160a01b038116600090815260066020526040902054819060ff16156107dd57600080fd5b6001600160a01b0380831660009081526006602052604090206002015483911615801561081257506001600160a01b03811633145b8061083957506001600160a01b038181166000908152600660205260409020600201541633145b61084257600080fd5b60075460ff161561085257600080fd5b600084815260056020908152604091829020805460010190558151868152915133927fc0f8946b28ac7993b4dd24b05482b70709d3394c92247236929d86a50b24d0ab92908290030190a250505050565b6000546001600160a01b031690565b6000546001600160a01b0316331490565b3360008181526006602052604090205460ff16156108e057600080fd5b336000818152600660205260409020600201546001600160a01b031615801561091157506001600160a01b03811633145b8061093857506001600160a01b038181166000908152600660205260409020600201541633145b61094157600080fd5b60075460ff161561095157600080fd5b3360008181526006602090815260409182902060020180546001600160a01b0319166001600160a01b03881690811790915582519384529083015280517f3bc4f409beaf4fdda6a2d537717b5131aecea79aecfdd3d885488ddaa5a14c329281900390910190a1505050565b6109c56108b2565b6109ce57600080fd5b6002805490829055604080518281526020810184905281517f48bd2ad49200e0ca36b95736b1b720e3a4db1eb87715905a0242d11e90fcf176929181900390910190a15050565b60606004805480602002602001604051908101604052809291908181526020018280548015610a6357602002820191906000526020600020905b815481526020019060010190808311610a4f575b5050505050905090565b6001600160a01b038116600090815260066020526040902054819060ff1615610a9557600080fd5b6001600160a01b0382166000908152600660205260409020548290610100900460ff16610ac157600080fd5b60075460ff1615610ad157600080fd5b6001600160a01b0383166000908152600660205260409020600181015415610b6b576001810154340360018201546040516001600160a01b0387169180156108fc02916000818181858888f19350505050158015610b33573d6000803e3d6000fd5b508015610b6957604051339082156108fc029083906000818181858888f19350505050158015610b67573d6000803e3d6000fd5b505b505b6002810180546001600160a01b03191633908117909155604080516001600160a01b0387168152602081019290925280517f3bc4f409beaf4fdda6a2d537717b5131aecea79aecfdd3d885488ddaa5a14c329281900390910190a150505050565b4290565b60025490565b60075460ff1615610be657600080fd5b610bee6108b2565b610bf757600080fd5b6007805460ff191660011790556040805130815290517f231ba46a9796cfff3206eb206f870c5e4f68248af093e30cf9e3dd48857a6e669181900360200190a1565b610c416108b2565b610c4a57600080fd5b6001600160a01b03811660009081526001602052604090205460ff16610c6f57600080fd5b6001600160a01b038116600081815260016020526040808220805460ff19169055517f30acaa541089592567cd4ce36437c68778a43e66dc1a9e7031e4496faf4593259190a250565b610cc06108b2565b610cc957600080fd5b610cd281610cd5565b50565b6001600160a01b038116610ce857600080fd5b600080546040516001600160a01b03808516939216917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a3600080546001600160a01b0319166001600160a01b039290921691909117905556fea265627a7a72315820592287c33aa2e674be0dc1f8dd6e20a7a85d4969ab0218d2fc584bc1e716452664736f6c63430005100032a265627a7a7231582006f0ca33a411c9c88d3f819992fe2713be31aaf07330429f15b3367cd837e17e64736f6c63430005100032",
+    "deployedBytecode": "60806040523480156200001157600080fd5b50600436106200012f5760003560e01c80638da5cb5b11620000b1578063c0cc365d116200007b578063c0cc365d146200044c578063e1aa071c146200046c578063e23a845a1462000476578063f0490b8a1462000480578063f2fde38b14620004a9576200012f565b80638da5cb5b14620003dc5780638f32d59b14620004025780639534e637146200040c578063ac2f0074146200042c576200012f565b80632ea6640111620000ff5780632ea66401146200033d5780634e71d92d146200036857806357de26a41462000372578063715018a614620003a657806374478bb314620003b0576200012f565b8062f63722146200013457806310a8aecd146200028857806312065fe014620002c5578063170b5add14620002e1575b600080fd5b62000267600480360360408110156200014c57600080fd5b8101906020810181356401000000008111156200016857600080fd5b8201836020820111156200017b57600080fd5b803590602001918460018302840111640100000000831117156200019e57600080fd5b91908080601f0160208091040260200160405190810160405280939291908181526020018383808284376000920191909152509295949360208101935035915050640100000000811115620001f257600080fd5b8201836020820111156200020557600080fd5b803590602001918460208302840111640100000000831117156200022857600080fd5b919080806020026020016040519081016040528093929190818152602001838360200280828437600092019190915250929550620004d2945050505050565b604080519283526001600160a01b0390911660208301528051918290030190f35b620002b160048036036020811015620002a057600080fd5b50356001600160a01b031662000736565b604080519115158252519081900360200190f35b620002cf62000754565b60408051918252519081900360200190f35b620002eb6200076f565b60408051602080825283518183015283519192839290830191858101910280838360005b83811015620003295781810151838201526020016200030f565b505050509050019250505060405180910390f35b62000366600480360360208110156200035557600080fd5b50356001600160a01b0316620007d2565b005b620003666200085c565b6200037c620008a2565b604080516001600160a01b0390941684526020840192909252151582820152519081900360600190f35b62000366620008ca565b620003ba62000928565b6040805193151584529115156020840152151582820152519081900360600190f35b620003e662000953565b604080516001600160a01b039092168252519081900360200190f35b620002b162000962565b62000366600480360360208110156200042457600080fd5b503562000973565b620003e6600480360360208110156200044457600080fd5b503562000a92565b62000366600480360360208110156200046457600080fd5b503562000aba565b620002cf62000b15565b620002cf62000b19565b62000366600480360360208110156200049857600080fd5b50356001600160a01b031662000b1f565b6200036660048036036020811015620004c157600080fd5b50356001600160a01b031662000ba2565b60008060008484604051620004e79062000c33565b604080825283519082015282518190602080830191606084019187019080838360005b83811015620005245781810151838201526020016200050a565b50505050905090810190601f168015620005525780820380516001836020036101000a031916815260200191505b508381038252845181528451602091820191808701910280838360005b83811015620005895781810151838201526020016200056f565b50505050905001945050505050604051809103906000f080158015620005b3573d6000803e3d6000fd5b50600380546001808201928390557fc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85b90910180546001600160a01b0319166001600160a01b03851690811790915533600081815260046020908152604080832080549687018155835281832090950186905584518181528c51818301528c5197985095969395879593947f7ea57775055a1d04b0e99841ebddb0a6bf8ca4d1b0474329fdd201c5d3ac6c57948e949293849391840192908601918190849084905b838110156200068e57818101518382015260200162000674565b50505050905090810190601f168015620006bc5780820380516001836020036101000a031916815260200191505b509250505060405180910390a46040805163f2fde38b60e01b815233600482015290516001600160a01b0384169163f2fde38b91602480830192600092919082900301818387803b1580156200071157600080fd5b505af115801562000726573d6000803e3d6000fd5b5092989397509295505050505050565b6001600160a01b031660009081526001602052604090205460ff1690565b60006200076062000962565b6200076a57600080fd5b504790565b33600090815260046020908152604091829020805483518184028101840190945280845260609392830182828015620007c857602002820191906000526020600020905b815481526020019060010190808311620007b3575b5050505050905090565b620007dc62000962565b620007e657600080fd5b6001600160a01b03811660009081526001602052604090205460ff16156200080d57600080fd5b6001600160a01b0381166000818152600160208190526040808320805460ff1916909217909155517fff9a8f4e0a39755c20c899b46171e470382709479fce2aa1e388f95edfe017399190a250565b620008673362000736565b6200087157600080fd5b60025442116200088057600080fd5b6200088a62000962565b156200089557600080fd5b620008a03362000bc4565b565b6000806000620008b162000953565b600254620008bf3362000736565b925092509250909192565b620008d462000962565b620008de57600080fd5b600080546040516001600160a01b03909116907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908390a3600080546001600160a01b0319169055565b6000806000620009383362000736565b60025442116200094762000962565b15925092509250909192565b6000546001600160a01b031690565b6000546001600160a01b0316331490565b80336001600160a01b0316600382815481106200098c57fe5b6000918252602091829020015460408051638da5cb5b60e01b815290516001600160a01b0390921692638da5cb5b92600480840193829003018186803b158015620009d657600080fd5b505afa158015620009eb573d6000803e3d6000fd5b505050506040513d602081101562000a0257600080fd5b50516001600160a01b03161462000a1857600080fd5b60006003838154811062000a2857fe5b60009182526020822001546040805163ed8c2aed60e01b815290516001600160a01b039092169350839263ed8c2aed9260048084019382900301818387803b15801562000a7457600080fd5b505af115801562000a89573d6000803e3d6000fd5b50505050505050565b6003818154811062000aa057fe5b6000918252602090912001546001600160a01b0316905081565b62000ac462000962565b62000ace57600080fd5b6002805490829055604080518281526020810184905281517f48bd2ad49200e0ca36b95736b1b720e3a4db1eb87715905a0242d11e90fcf176929181900390910190a15050565b4290565b60025490565b62000b2962000962565b62000b3357600080fd5b6001600160a01b03811660009081526001602052604090205460ff1662000b5957600080fd5b6001600160a01b038116600081815260016020526040808220805460ff19169055517f30acaa541089592567cd4ce36437c68778a43e66dc1a9e7031e4496faf4593259190a250565b62000bac62000962565b62000bb657600080fd5b62000bc18162000bc4565b50565b6001600160a01b03811662000bd857600080fd5b600080546040516001600160a01b03808516939216917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a3600080546001600160a01b0319166001600160a01b0392909216919091179055565b6110908062000c428339019056fe60806040523480156200001157600080fd5b506040516200109038038062001090833981810160405260408110156200003757600080fd5b81019080805160405193929190846401000000008211156200005857600080fd5b9083019060208201858111156200006e57600080fd5b82516401000000008111828201881017156200008957600080fd5b82525081516020918201929091019080838360005b83811015620000b85781810151838201526020016200009e565b50505050905090810190601f168015620000e65780820380516001836020036101000a031916815260200191505b50604052602001805160405193929190846401000000008211156200010a57600080fd5b9083019060208201858111156200012057600080fd5b82518660208202830111640100000000821117156200013e57600080fd5b82525081516020918201928201910280838360005b838110156200016d57818101518382015260200162000153565b50505050919091016040819052600080546001600160a01b03191633178082556001600160a01b0316955093507f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09250839150a36000815111620001d057600080fd5b8151620001e590600390602085019062000263565b5060005b81518110156200025a5760048282815181106200020257fe5b6020908102919091018101518254600181018455600093845291832090910155825160059082908590859081106200023657fe5b602090810291909101810151825281019190915260400160002055600101620001e9565b50505062000308565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f10620002a657805160ff1916838001178555620002d6565b82800160010185558215620002d6579182015b82811115620002d6578251825591602001919060010190620002b9565b50620002e4929150620002e8565b5090565b6200030591905b80821115620002e45760008155600101620002ef565b90565b610d7880620003186000396000f3fe6080604052600436106101355760003560e01c80638da5cb5b116100ab578063df1edbe81161006f578063df1edbe81461049c578063e1aa071c146104c2578063e23a845a146104d7578063ed8c2aed146104ec578063f0490b8a14610501578063f2fde38b1461053457610135565b80638da5cb5b146103945780638f32d59b146103c5578063b31e1d4d146103da578063c0cc365d1461040d578063cc2ee1961461043757610135565b806357de26a4116100fd57806357de26a414610291578063597e1fb5146102d0578063715018a6146102e557806374478bb3146102fa57806381d0e37b146103315780638d8afd3d1461035b57610135565b806306fdde031461013a57806310a8aecd146101c45780632ea664011461020b578063409e2205146102405780634e71d92d1461027c575b600080fd5b34801561014657600080fd5b5061014f610567565b6040805160208082528351818301528351919283929083019185019080838360005b83811015610189578181015183820152602001610171565b50505050905090810190601f1680156101b65780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b3480156101d057600080fd5b506101f7600480360360208110156101e757600080fd5b50356001600160a01b03166105f5565b604080519115158252519081900360200190f35b34801561021757600080fd5b5061023e6004803603602081101561022e57600080fd5b50356001600160a01b0316610613565b005b34801561024c57600080fd5b5061026a6004803603602081101561026357600080fd5b5035610699565b60408051918252519081900360200190f35b34801561028857600080fd5b5061023e6106b7565b34801561029d57600080fd5b506102a66106f4565b604080516001600160a01b0390941684526020840192909252151582820152519081900360600190f35b3480156102dc57600080fd5b506101f7610718565b3480156102f157600080fd5b5061023e610721565b34801561030657600080fd5b5061030f61077c565b6040805193151584529115156020840152151582820152519081900360600190f35b34801561033d57600080fd5b5061026a6004803603602081101561035457600080fd5b50356107a3565b34801561036757600080fd5b5061023e6004803603604081101561037e57600080fd5b50803590602001356001600160a01b03166107b5565b3480156103a057600080fd5b506103a96108a3565b604080516001600160a01b039092168252519081900360200190f35b3480156103d157600080fd5b506101f76108b2565b3480156103e657600080fd5b5061023e600480360360208110156103fd57600080fd5b50356001600160a01b03166108c3565b34801561041957600080fd5b5061023e6004803603602081101561043057600080fd5b50356109bd565b34801561044357600080fd5b5061044c610a15565b60408051602080825283518183015283519192839290830191858101910280838360005b83811015610488578181015183820152602001610470565b505050509050019250505060405180910390f35b61023e600480360360208110156104b257600080fd5b50356001600160a01b0316610a6d565b3480156104ce57600080fd5b5061026a610bcc565b3480156104e357600080fd5b5061026a610bd0565b3480156104f857600080fd5b5061023e610bd6565b34801561050d57600080fd5b5061023e6004803603602081101561052457600080fd5b50356001600160a01b0316610c39565b34801561054057600080fd5b5061023e6004803603602081101561055757600080fd5b50356001600160a01b0316610cb8565b6003805460408051602060026001851615610100026000190190941693909304601f810184900484028201840190925281815292918301828280156105ed5780601f106105c2576101008083540402835291602001916105ed565b820191906000526020600020905b8154815290600101906020018083116105d057829003601f168201915b505050505081565b6001600160a01b031660009081526001602052604090205460ff1690565b61061b6108b2565b61062457600080fd5b6001600160a01b03811660009081526001602052604090205460ff161561064a57600080fd5b6001600160a01b0381166000818152600160208190526040808320805460ff1916909217909155517fff9a8f4e0a39755c20c899b46171e470382709479fce2aa1e388f95edfe017399190a250565b600481815481106106a657fe5b600091825260209091200154905081565b6106c0336105f5565b6106c957600080fd5b60025442116106d757600080fd5b6106df6108b2565b156106e957600080fd5b6106f233610cd5565b565b60008060006107016108a3565b60025461070d336105f5565b925092509250909192565b60075460ff1681565b6107296108b2565b61073257600080fd5b600080546040516001600160a01b03909116907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908390a3600080546001600160a01b0319169055565b600080600061078a336105f5565b60025442116107976108b2565b15925092509250909192565b60056020526000908152604090205481565b6001600160a01b038116600090815260066020526040902054819060ff16156107dd57600080fd5b6001600160a01b0380831660009081526006602052604090206002015483911615801561081257506001600160a01b03811633145b8061083957506001600160a01b038181166000908152600660205260409020600201541633145b61084257600080fd5b60075460ff161561085257600080fd5b600084815260056020908152604091829020805460010190558151868152915133927fc0f8946b28ac7993b4dd24b05482b70709d3394c92247236929d86a50b24d0ab92908290030190a250505050565b6000546001600160a01b031690565b6000546001600160a01b0316331490565b3360008181526006602052604090205460ff16156108e057600080fd5b336000818152600660205260409020600201546001600160a01b031615801561091157506001600160a01b03811633145b8061093857506001600160a01b038181166000908152600660205260409020600201541633145b61094157600080fd5b60075460ff161561095157600080fd5b3360008181526006602090815260409182902060020180546001600160a01b0319166001600160a01b03881690811790915582519384529083015280517f3bc4f409beaf4fdda6a2d537717b5131aecea79aecfdd3d885488ddaa5a14c329281900390910190a1505050565b6109c56108b2565b6109ce57600080fd5b6002805490829055604080518281526020810184905281517f48bd2ad49200e0ca36b95736b1b720e3a4db1eb87715905a0242d11e90fcf176929181900390910190a15050565b60606004805480602002602001604051908101604052809291908181526020018280548015610a6357602002820191906000526020600020905b815481526020019060010190808311610a4f575b5050505050905090565b6001600160a01b038116600090815260066020526040902054819060ff1615610a9557600080fd5b6001600160a01b0382166000908152600660205260409020548290610100900460ff16610ac157600080fd5b60075460ff1615610ad157600080fd5b6001600160a01b0383166000908152600660205260409020600181015415610b6b576001810154340360018201546040516001600160a01b0387169180156108fc02916000818181858888f19350505050158015610b33573d6000803e3d6000fd5b508015610b6957604051339082156108fc029083906000818181858888f19350505050158015610b67573d6000803e3d6000fd5b505b505b6002810180546001600160a01b03191633908117909155604080516001600160a01b0387168152602081019290925280517f3bc4f409beaf4fdda6a2d537717b5131aecea79aecfdd3d885488ddaa5a14c329281900390910190a150505050565b4290565b60025490565b60075460ff1615610be657600080fd5b610bee6108b2565b610bf757600080fd5b6007805460ff191660011790556040805130815290517f231ba46a9796cfff3206eb206f870c5e4f68248af093e30cf9e3dd48857a6e669181900360200190a1565b610c416108b2565b610c4a57600080fd5b6001600160a01b03811660009081526001602052604090205460ff16610c6f57600080fd5b6001600160a01b038116600081815260016020526040808220805460ff19169055517f30acaa541089592567cd4ce36437c68778a43e66dc1a9e7031e4496faf4593259190a250565b610cc06108b2565b610cc957600080fd5b610cd281610cd5565b50565b6001600160a01b038116610ce857600080fd5b600080546040516001600160a01b03808516939216917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a3600080546001600160a01b0319166001600160a01b039290921691909117905556fea265627a7a72315820592287c33aa2e674be0dc1f8dd6e20a7a85d4969ab0218d2fc584bc1e716452664736f6c63430005100032a265627a7a7231582006f0ca33a411c9c88d3f819992fe2713be31aaf07330429f15b3367cd837e17e64736f6c63430005100032",
+    "sourceMap": "257:1197:2:-;;;;;524:6:5;:19;;-1:-1:-1;;;;;;524:19:5;533:10;524:19;;;;-1:-1:-1;;;;;588:6:5;;555:40;;524:6;;555:40;257:1197:2;;;;;;",
+    "deployedSourceMap": "257:1197:2:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;257:1197:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;488:474;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;488:474:2;;;;;;;;21:11:-1;5:28;;2:2;;;46:1;43;36:12;2:2;488:474:2;;35:9:-1;28:4;12:14;8:25;5:40;2:2;;;58:1;55;48:12;2:2;488:474:2;;;;;;100:9:-1;95:1;81:12;77:20;67:8;63:35;60:50;39:11;25:12;22:29;11:107;8:2;;;131:1;128;121:12;8:2;488:474:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;30:3:-1;22:6;14;1:33;99:1;81:16;;74:27;;;;-1:-1;488:474:2;;;;;;;;-1:-1:-1;488:474:2;;-1:-1:-1;;21:11;5:28;;2:2;;;46:1;43;36:12;2:2;488:474:2;;35:9:-1;28:4;12:14;8:25;5:40;2:2;;;58:1;55;48:12;2:2;488:474:2;;;;;;101:9:-1;95:2;81:12;77:21;67:8;63:36;60:51;39:11;25:12;22:29;11:108;8:2;;;132:1;129;122:12;8:2;488:474:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;30:3:-1;22:6;14;1:33;99:1;81:16;;74:27;;;;-1:-1;488:474:2;;-1:-1:-1;488:474:2;;-1:-1:-1;;;;;488:474:2:i;:::-;;;;;;;-1:-1:-1;;;;;488:474:2;;;;;;;;;;;;;;;;1980:108:3;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;1980:108:3;-1:-1:-1;;;;;1980:108:3;;:::i;:::-;;;;;;;;;;;;;;;;;;1341:109:2;;;:::i;:::-;;;;;;;;;;;;;;;;1108:107;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;8:100:-1;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;1108:107:2;;;;;;;;;;;;;;;;;1168:227:3;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;1168:227:3;-1:-1:-1;;;;;1168:227:3;;:::i;:::-;;2945:192;;;:::i;3780:132::-;;;:::i;:::-;;;;-1:-1:-1;;;;;3780:132:3;;;;;;;;;;;;;;;;;;;;;;;;;;;1309:130:5;;;:::i;3393:145:3:-;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;659:72:5;;;:::i;:::-;;;;-1:-1:-1;;;;;659:72:5;;;;;;;;;;;;;;957:85;;;:::i;970:130:2:-;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;970:130:2;;:::i;301:19::-;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;301:19:2;;:::i;2287:232:3:-;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;2287:232:3;;:::i;3920:76::-;;;:::i;2661:96::-;;;:::i;1534:213::-;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;1534:213:3;-1:-1:-1;;;;;1534:213:3;;:::i;1603:103:5:-;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;1603:103:5;-1:-1:-1;;;;;1603:103:5;;:::i;488:474:2:-;571:4;577:7;597:9;618:5;625:8;609:25;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;8:100:-1;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;609:25:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;609:25:2;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;609:25:2;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;-1:-1;677:5:2;27:10:-1;;39:1;23:18;;;45:23;;;;677:16:2;;;;;;-1:-1:-1;;;;;;677:16:2;-1:-1:-1;;;;;677:16:2;;;;;;;;717:10;-1:-1:-1;704:24:2;;;:12;677:16;704:24;;;;;;;27:10:-1;;23:18;;;45:23;;704:37:2;;;;;;;;;;;759:53;;;;;;;;;;;;;677:16;;-1:-1:-1;23:18;;677:16:2;;23:18:-1;;717:10:2;;759:53;;;;;;;;;;;;;;;;;;;;;;8:100:-1;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;759:53:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;825:34;;;-1:-1:-1;;;825:34:2;;848:10;825:34;;;;;;-1:-1:-1;;;;;825:22:2;;;;;:34;;;;;-1:-1:-1;;825:34:2;;;;;;;-1:-1:-1;825:22:2;:34;;;5:2:-1;;;;30:1;27;20:12;5:2;825:34:2;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;-1:-1;932:6:2;;948:4;;-1:-1:-1;488:474:2;;-1:-1:-1;;;;;;488:474:2:o;1980:108:3:-;-1:-1:-1;;;;;2062:18:3;2038:4;2062:18;;;:8;:18;;;;;;;;;1980:108::o;1341:109:2:-;1394:7;850:9:5;:7;:9::i;:::-;842:18;;;;;;-1:-1:-1;1421:21:2;1341:109;:::o;1108:107::-;1196:10;1183:24;;;;:12;:24;;;;;;;;;1176:31;;;;;;;;;;;;;;;;;1150:13;;1176:31;;;1183:24;1176:31;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1108:107;:::o;1168:227:3:-;850:9:5;:7;:9::i;:::-;842:18;;;;;;-1:-1:-1;;;;;1244:18:3;;;;;;:8;:18;;;;;;;;1242:20;1234:30;;;;;;-1:-1:-1;;;;;1323:18:3;;;;;;1344:4;1323:18;;;;;;;;:25;;-1:-1:-1;;1323:25:3;;;;;;;1364:23;;;1323:18;1364:23;1168:227;:::o;2945:192::-;2988:21;2998:10;2988:9;:21::i;:::-;2980:30;;;;;;3035:14;;3029:3;:20;3021:29;;;;;;3070:9;:7;:9::i;:::-;3069:10;3061:19;;;;;;3093:30;3112:10;3093:18;:30::i;:::-;2945:192::o;3780:132::-;3817:7;3826:4;3832;3857:7;:5;:7::i;:::-;3866:14;;3882:21;3892:10;3882:9;:21::i;:::-;3849:55;;;;;;3780:132;;;:::o;1309:130:5:-;850:9;:7;:9::i;:::-;842:18;;;;;;1404:1;1388:6;;1367:40;;-1:-1:-1;;;;;1388:6:5;;;;1367:40;;1404:1;;1367:40;1431:1;1414:19;;-1:-1:-1;;;;;;1414:19:5;;;1309:130::o;3393:145:3:-;3437:4;3443;3449;3474:21;3484:10;3474:9;:21::i;:::-;3503:14;;3497:3;:20;3520:9;:7;:9::i;:::-;3519:10;3466:64;;;;;;3393:145;;;:::o;659:72:5:-;696:7;719:6;-1:-1:-1;;;;;719:6:5;659:72;:::o;957:85::-;996:4;1030:6;-1:-1:-1;;;;;1030:6:5;1016:10;:20;;957:85::o;970:130:2:-;1021:6;1302:10;-1:-1:-1;;;;;1277:35:2;:5;1283:6;1277:13;;;;;;;;;;;;;;;;;;;:21;;;-1:-1:-1;;;1277:21:2;;;;-1:-1:-1;;;;;1277:13:2;;;;:19;;:21;;;;;;;;;;:13;:21;;;5:2:-1;;;;30:1;27;20:12;5:2;1277:21:2;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;1277:21:2;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;1277:21:2;-1:-1:-1;;;;;1277:35:2;;1269:44;;;;;;1040:9;1052:5;1058:6;1052:13;;;;;;;;;;;;;;;;;1076:16;;;-1:-1:-1;;;1076:16:2;;;;-1:-1:-1;;;;;1052:13:2;;;;-1:-1:-1;1052:13:2;;1076:14;;:16;;;;;;;;;;1052:13;;1076:16;;;5:2:-1;;;;30:1;27;20:12;5:2;1076:16:2;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;1076:16:2;;;;1324:1;970:130;;:::o;301:19::-;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;301:19:2;;-1:-1:-1;301:19:2;:::o;2287:232:3:-;850:9:5;:7;:9::i;:::-;842:18;;;;;;2385:14:3;;;2412:32;;;;2462:49;;;;;;;;;;;;;;;;;;;;;;;;;867:1:5;2287:232:3;:::o;3920:76::-;3985:3;3920:76;:::o;2661:96::-;2735:14;;2661:96;:::o;1534:213::-;850:9:5;:7;:9::i;:::-;842:18;;;;;;-1:-1:-1;;;;;1611:18:3;;;;;;:8;:18;;;;;;;;1603:28;;;;;;-1:-1:-1;;;;;1673:18:3;;1694:5;1673:18;;;:8;:18;;;;;;:26;;-1:-1:-1;;1673:26:3;;;1715:24;;;1694:5;1715:24;1534:213;:::o;1603:103:5:-;850:9;:7;:9::i;:::-;842:18;;;;;;1672:28;1691:8;1672:18;:28::i;:::-;1603:103;:::o;1843:173::-;-1:-1:-1;;;;;1913:22:5;;1905:31;;;;;;1969:6;;;1948:38;;-1:-1:-1;;;;;1948:38:5;;;;1969:6;;;1948:38;;;1993:6;:17;;-1:-1:-1;;;;;;1993:17:5;-1:-1:-1;;;;;1993:17:5;;;;;;;;;;1843:173::o;257:1197:2:-;;;;;;;;:::o",
+    "sourcePath": "c:/Users/Guilherme Mussi/git/solidity-voting/contracts/PollingStation.sol",
+    "compiler": {
+        "name": "solc",
+        "version": "0.5.16+commit.9c3226ce"
+    },
+    "ast": {
+        "absolutePath": "c:/Users/Guilherme Mussi/git/solidity-voting/contracts/PollingStation.sol",
+        "exportedSymbols": {
+            "PollingStation": [
+                504
+            ]
+        },
+        "id": 505,
+        "nodeType": "SourceUnit",
+        "nodes": [
+            {
+                "id": 360,
+                "literals": [
+                    "solidity",
+                    ">=",
+                    "0.5",
+                    ".16"
+                ],
+                "nodeType": "PragmaDirective",
+                "src": "0:25:2"
+            },
+            {
+                "absolutePath": "c:/Users/Guilherme Mussi/git/solidity-voting/node_modules/@gmussi-contracts/gmussi-claimable/contracts/Claimable.sol",
+                "file": "c:/Users/Guilherme Mussi/git/solidity-voting/node_modules/@gmussi-contracts/gmussi-claimable/contracts/Claimable.sol",
+                "id": 361,
+                "nodeType": "ImportDirective",
+                "scope": 505,
+                "sourceUnit": 698,
+                "src": "29:126:2",
+                "symbolAliases": [],
+                "unitAlias": ""
+            },
+            {
+                "absolutePath": "c:/Users/Guilherme Mussi/git/solidity-voting/contracts/Poll.sol",
+                "file": "./Poll.sol",
+                "id": 362,
+                "nodeType": "ImportDirective",
+                "scope": 505,
+                "sourceUnit": 359,
+                "src": "157:20:2",
+                "symbolAliases": [],
+                "unitAlias": ""
+            },
+            {
+                "baseContracts": [
+                    {
+                        "arguments": null,
+                        "baseName": {
+                            "contractScope": null,
+                            "id": 363,
+                            "name": "Claimable",
+                            "nodeType": "UserDefinedTypeName",
+                            "referencedDeclaration": 697,
+                            "src": "284:9:2",
+                            "typeDescriptions": {
+                                "typeIdentifier": "t_contract$_Claimable_$697",
+                                "typeString": "contract Claimable"
+                            }
+                        },
+                        "id": 364,
+                        "nodeType": "InheritanceSpecifier",
+                        "src": "284:9:2"
+                    }
+                ],
+                "contractDependencies": [
+                    358,
+                    697,
+                    839
+                ],
+                "contractKind": "contract",
+                "documentation": "This contract allows for the creation and management of Polls",
+                "fullyImplemented": true,
+                "id": 504,
+                "linearizedBaseContracts": [
+                    504,
+                    697,
+                    839
+                ],
+                "name": "PollingStation",
+                "nodeType": "ContractDefinition",
+                "nodes": [
+                    {
+                        "constant": false,
+                        "id": 367,
+                        "name": "polls",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 504,
+                        "src": "301:19:2",
+                        "stateVariable": true,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                            "typeIdentifier": "t_array$_t_contract$_Poll_$358_$dyn_storage",
+                            "typeString": "contract Poll[]"
+                        },
+                        "typeName": {
+                            "baseType": {
+                                "contractScope": null,
+                                "id": 365,
+                                "name": "Poll",
+                                "nodeType": "UserDefinedTypeName",
+                                "referencedDeclaration": 358,
+                                "src": "301:4:2",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_contract$_Poll_$358",
+                                    "typeString": "contract Poll"
+                                }
+                            },
+                            "id": 366,
+                            "length": null,
+                            "nodeType": "ArrayTypeName",
+                            "src": "301:6:2",
+                            "typeDescriptions": {
+                                "typeIdentifier": "t_array$_t_contract$_Poll_$358_$dyn_storage_ptr",
+                                "typeString": "contract Poll[]"
+                            }
+                        },
+                        "value": null,
+                        "visibility": "public"
+                    },
+                    {
+                        "constant": false,
+                        "id": 372,
+                        "name": "pollByOwners",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 504,
+                        "src": "327:40:2",
+                        "stateVariable": true,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                            "typeIdentifier": "t_mapping$_t_address_$_t_array$_t_uint256_$dyn_storage_$",
+                            "typeString": "mapping(address => uint256[])"
+                        },
+                        "typeName": {
+                            "id": 371,
+                            "keyType": {
+                                "id": 368,
+                                "name": "address",
+                                "nodeType": "ElementaryTypeName",
+                                "src": "336:7:2",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                }
+                            },
+                            "nodeType": "Mapping",
+                            "src": "327:27:2",
+                            "typeDescriptions": {
+                                "typeIdentifier": "t_mapping$_t_address_$_t_array$_t_uint256_$dyn_storage_$",
+                                "typeString": "mapping(address => uint256[])"
+                            },
+                            "valueType": {
+                                "baseType": {
+                                    "id": 369,
+                                    "name": "uint",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "347:4:2",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    }
+                                },
+                                "id": 370,
+                                "length": null,
+                                "nodeType": "ArrayTypeName",
+                                "src": "347:6:2",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                                    "typeString": "uint256[]"
+                                }
+                            }
+                        },
+                        "value": null,
+                        "visibility": "internal"
+                    },
+                    {
+                        "anonymous": false,
+                        "documentation": null,
+                        "id": 382,
+                        "name": "PollCreated",
+                        "nodeType": "EventDefinition",
+                        "parameters": {
+                            "id": 381,
+                            "nodeType": "ParameterList",
+                            "parameters": [
+                                {
+                                    "constant": false,
+                                    "id": 374,
+                                    "indexed": true,
+                                    "name": "creator",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 382,
+                                    "src": "395:23:2",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_address",
+                                        "typeString": "address"
+                                    },
+                                    "typeName": {
+                                        "id": 373,
+                                        "name": "address",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "395:7:2",
+                                        "stateMutability": "nonpayable",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_address",
+                                            "typeString": "address"
+                                        }
+                                    },
+                                    "value": null,
+                                    "visibility": "internal"
+                                },
+                                {
+                                    "constant": false,
+                                    "id": 376,
+                                    "indexed": true,
+                                    "name": "pollId",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 382,
+                                    "src": "420:19:2",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    },
+                                    "typeName": {
+                                        "id": 375,
+                                        "name": "uint",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "420:4:2",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    },
+                                    "value": null,
+                                    "visibility": "internal"
+                                },
+                                {
+                                    "constant": false,
+                                    "id": 378,
+                                    "indexed": true,
+                                    "name": "pollAddr",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 382,
+                                    "src": "441:24:2",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_address",
+                                        "typeString": "address"
+                                    },
+                                    "typeName": {
+                                        "id": 377,
+                                        "name": "address",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "441:7:2",
+                                        "stateMutability": "nonpayable",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_address",
+                                            "typeString": "address"
+                                        }
+                                    },
+                                    "value": null,
+                                    "visibility": "internal"
+                                },
+                                {
+                                    "constant": false,
+                                    "id": 380,
+                                    "indexed": false,
+                                    "name": "name",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 382,
+                                    "src": "467:11:2",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_string_memory_ptr",
+                                        "typeString": "string"
+                                    },
+                                    "typeName": {
+                                        "id": 379,
+                                        "name": "string",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "467:6:2",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_string_storage_ptr",
+                                            "typeString": "string"
+                                        }
+                                    },
+                                    "value": null,
+                                    "visibility": "internal"
+                                }
+                            ],
+                            "src": "394:85:2"
+                        },
+                        "src": "376:104:2"
+                    },
+                    {
+                        "body": {
+                            "id": 440,
+                            "nodeType": "Block",
+                            "src": "586:376:2",
+                            "statements": [
+                                {
+                                    "assignments": [
+                                        395
+                                    ],
+                                    "declarations": [
+                                        {
+                                            "constant": false,
+                                            "id": 395,
+                                            "name": "poll",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 440,
+                                            "src": "597:9:2",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_contract$_Poll_$358",
+                                                "typeString": "contract Poll"
+                                            },
+                                            "typeName": {
+                                                "contractScope": null,
+                                                "id": 394,
+                                                "name": "Poll",
+                                                "nodeType": "UserDefinedTypeName",
+                                                "referencedDeclaration": 358,
+                                                "src": "597:4:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_contract$_Poll_$358",
+                                                    "typeString": "contract Poll"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "id": 401,
+                                    "initialValue": {
+                                        "argumentTypes": null,
+                                        "arguments": [
+                                            {
+                                                "argumentTypes": null,
+                                                "id": 398,
+                                                "name": "_name",
+                                                "nodeType": "Identifier",
+                                                "overloadedDeclarations": [],
+                                                "referencedDeclaration": 384,
+                                                "src": "618:5:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_string_memory_ptr",
+                                                    "typeString": "string memory"
+                                                }
+                                            },
+                                            {
+                                                "argumentTypes": null,
+                                                "id": 399,
+                                                "name": "_options",
+                                                "nodeType": "Identifier",
+                                                "overloadedDeclarations": [],
+                                                "referencedDeclaration": 387,
+                                                "src": "625:8:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                                                    "typeString": "bytes32[] memory"
+                                                }
+                                            }
+                                        ],
+                                        "expression": {
+                                            "argumentTypes": [
+                                                {
+                                                    "typeIdentifier": "t_string_memory_ptr",
+                                                    "typeString": "string memory"
+                                                },
+                                                {
+                                                    "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                                                    "typeString": "bytes32[] memory"
+                                                }
+                                            ],
+                                            "id": 397,
+                                            "isConstant": false,
+                                            "isLValue": false,
+                                            "isPure": false,
+                                            "lValueRequested": false,
+                                            "nodeType": "NewExpression",
+                                            "src": "609:8:2",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_function_creation_nonpayable$_t_string_memory_ptr_$_t_array$_t_bytes32_$dyn_memory_ptr_$returns$_t_contract$_Poll_$358_$",
+                                                "typeString": "function (string memory,bytes32[] memory) returns (contract Poll)"
+                                            },
+                                            "typeName": {
+                                                "contractScope": null,
+                                                "id": 396,
+                                                "name": "Poll",
+                                                "nodeType": "UserDefinedTypeName",
+                                                "referencedDeclaration": 358,
+                                                "src": "613:4:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_contract$_Poll_$358",
+                                                    "typeString": "contract Poll"
+                                                }
+                                            }
+                                        },
+                                        "id": 400,
+                                        "isConstant": false,
+                                        "isLValue": false,
+                                        "isPure": false,
+                                        "kind": "functionCall",
+                                        "lValueRequested": false,
+                                        "names": [],
+                                        "nodeType": "FunctionCall",
+                                        "src": "609:25:2",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_contract$_Poll_$358",
+                                            "typeString": "contract Poll"
+                                        }
+                                    },
+                                    "nodeType": "VariableDeclarationStatement",
+                                    "src": "597:37:2"
+                                },
+                                {
+                                    "assignments": [
+                                        403
+                                    ],
+                                    "declarations": [
+                                        {
+                                            "constant": false,
+                                            "id": 403,
+                                            "name": "pollId",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 440,
+                                            "src": "663:11:2",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_uint256",
+                                                "typeString": "uint256"
+                                            },
+                                            "typeName": {
+                                                "id": 402,
+                                                "name": "uint",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "663:4:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "id": 408,
+                                    "initialValue": {
+                                        "argumentTypes": null,
+                                        "arguments": [
+                                            {
+                                                "argumentTypes": null,
+                                                "id": 406,
+                                                "name": "poll",
+                                                "nodeType": "Identifier",
+                                                "overloadedDeclarations": [],
+                                                "referencedDeclaration": 395,
+                                                "src": "688:4:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_contract$_Poll_$358",
+                                                    "typeString": "contract Poll"
+                                                }
+                                            }
+                                        ],
+                                        "expression": {
+                                            "argumentTypes": [
+                                                {
+                                                    "typeIdentifier": "t_contract$_Poll_$358",
+                                                    "typeString": "contract Poll"
+                                                }
+                                            ],
+                                            "expression": {
+                                                "argumentTypes": null,
+                                                "id": 404,
+                                                "name": "polls",
+                                                "nodeType": "Identifier",
+                                                "overloadedDeclarations": [],
+                                                "referencedDeclaration": 367,
+                                                "src": "677:5:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_array$_t_contract$_Poll_$358_$dyn_storage",
+                                                    "typeString": "contract Poll[] storage ref"
+                                                }
+                                            },
+                                            "id": 405,
+                                            "isConstant": false,
+                                            "isLValue": false,
+                                            "isPure": false,
+                                            "lValueRequested": false,
+                                            "memberName": "push",
+                                            "nodeType": "MemberAccess",
+                                            "referencedDeclaration": null,
+                                            "src": "677:10:2",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_function_arraypush_nonpayable$_t_contract$_Poll_$358_$returns$_t_uint256_$",
+                                                "typeString": "function (contract Poll) returns (uint256)"
+                                            }
+                                        },
+                                        "id": 407,
+                                        "isConstant": false,
+                                        "isLValue": false,
+                                        "isPure": false,
+                                        "kind": "functionCall",
+                                        "lValueRequested": false,
+                                        "names": [],
+                                        "nodeType": "FunctionCall",
+                                        "src": "677:16:2",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    },
+                                    "nodeType": "VariableDeclarationStatement",
+                                    "src": "663:30:2"
+                                },
+                                {
+                                    "expression": {
+                                        "argumentTypes": null,
+                                        "arguments": [
+                                            {
+                                                "argumentTypes": null,
+                                                "id": 414,
+                                                "name": "pollId",
+                                                "nodeType": "Identifier",
+                                                "overloadedDeclarations": [],
+                                                "referencedDeclaration": 403,
+                                                "src": "734:6:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                }
+                                            }
+                                        ],
+                                        "expression": {
+                                            "argumentTypes": [
+                                                {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                }
+                                            ],
+                                            "expression": {
+                                                "argumentTypes": null,
+                                                "baseExpression": {
+                                                    "argumentTypes": null,
+                                                    "id": 409,
+                                                    "name": "pollByOwners",
+                                                    "nodeType": "Identifier",
+                                                    "overloadedDeclarations": [],
+                                                    "referencedDeclaration": 372,
+                                                    "src": "704:12:2",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_mapping$_t_address_$_t_array$_t_uint256_$dyn_storage_$",
+                                                        "typeString": "mapping(address => uint256[] storage ref)"
+                                                    }
+                                                },
+                                                "id": 412,
+                                                "indexExpression": {
+                                                    "argumentTypes": null,
+                                                    "expression": {
+                                                        "argumentTypes": null,
+                                                        "id": 410,
+                                                        "name": "msg",
+                                                        "nodeType": "Identifier",
+                                                        "overloadedDeclarations": [],
+                                                        "referencedDeclaration": 854,
+                                                        "src": "717:3:2",
+                                                        "typeDescriptions": {
+                                                            "typeIdentifier": "t_magic_message",
+                                                            "typeString": "msg"
+                                                        }
+                                                    },
+                                                    "id": 411,
+                                                    "isConstant": false,
+                                                    "isLValue": false,
+                                                    "isPure": false,
+                                                    "lValueRequested": false,
+                                                    "memberName": "sender",
+                                                    "nodeType": "MemberAccess",
+                                                    "referencedDeclaration": null,
+                                                    "src": "717:10:2",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_address_payable",
+                                                        "typeString": "address payable"
+                                                    }
+                                                },
+                                                "isConstant": false,
+                                                "isLValue": true,
+                                                "isPure": false,
+                                                "lValueRequested": false,
+                                                "nodeType": "IndexAccess",
+                                                "src": "704:24:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_array$_t_uint256_$dyn_storage",
+                                                    "typeString": "uint256[] storage ref"
+                                                }
+                                            },
+                                            "id": 413,
+                                            "isConstant": false,
+                                            "isLValue": false,
+                                            "isPure": false,
+                                            "lValueRequested": false,
+                                            "memberName": "push",
+                                            "nodeType": "MemberAccess",
+                                            "referencedDeclaration": null,
+                                            "src": "704:29:2",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_function_arraypush_nonpayable$_t_uint256_$returns$_t_uint256_$",
+                                                "typeString": "function (uint256) returns (uint256)"
+                                            }
+                                        },
+                                        "id": 415,
+                                        "isConstant": false,
+                                        "isLValue": false,
+                                        "isPure": false,
+                                        "kind": "functionCall",
+                                        "lValueRequested": false,
+                                        "names": [],
+                                        "nodeType": "FunctionCall",
+                                        "src": "704:37:2",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    },
+                                    "id": 416,
+                                    "nodeType": "ExpressionStatement",
+                                    "src": "704:37:2"
+                                },
+                                {
+                                    "eventCall": {
+                                        "argumentTypes": null,
+                                        "arguments": [
+                                            {
+                                                "argumentTypes": null,
+                                                "expression": {
+                                                    "argumentTypes": null,
+                                                    "id": 418,
+                                                    "name": "msg",
+                                                    "nodeType": "Identifier",
+                                                    "overloadedDeclarations": [],
+                                                    "referencedDeclaration": 854,
+                                                    "src": "771:3:2",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_magic_message",
+                                                        "typeString": "msg"
+                                                    }
+                                                },
+                                                "id": 419,
+                                                "isConstant": false,
+                                                "isLValue": false,
+                                                "isPure": false,
+                                                "lValueRequested": false,
+                                                "memberName": "sender",
+                                                "nodeType": "MemberAccess",
+                                                "referencedDeclaration": null,
+                                                "src": "771:10:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_address_payable",
+                                                    "typeString": "address payable"
+                                                }
+                                            },
+                                            {
+                                                "argumentTypes": null,
+                                                "id": 420,
+                                                "name": "pollId",
+                                                "nodeType": "Identifier",
+                                                "overloadedDeclarations": [],
+                                                "referencedDeclaration": 403,
+                                                "src": "783:6:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                }
+                                            },
+                                            {
+                                                "argumentTypes": null,
+                                                "arguments": [
+                                                    {
+                                                        "argumentTypes": null,
+                                                        "id": 422,
+                                                        "name": "poll",
+                                                        "nodeType": "Identifier",
+                                                        "overloadedDeclarations": [],
+                                                        "referencedDeclaration": 395,
+                                                        "src": "799:4:2",
+                                                        "typeDescriptions": {
+                                                            "typeIdentifier": "t_contract$_Poll_$358",
+                                                            "typeString": "contract Poll"
+                                                        }
+                                                    }
+                                                ],
+                                                "expression": {
+                                                    "argumentTypes": [
+                                                        {
+                                                            "typeIdentifier": "t_contract$_Poll_$358",
+                                                            "typeString": "contract Poll"
+                                                        }
+                                                    ],
+                                                    "id": 421,
+                                                    "isConstant": false,
+                                                    "isLValue": false,
+                                                    "isPure": true,
+                                                    "lValueRequested": false,
+                                                    "nodeType": "ElementaryTypeNameExpression",
+                                                    "src": "791:7:2",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_type$_t_address_$",
+                                                        "typeString": "type(address)"
+                                                    },
+                                                    "typeName": "address"
+                                                },
+                                                "id": 423,
+                                                "isConstant": false,
+                                                "isLValue": false,
+                                                "isPure": false,
+                                                "kind": "typeConversion",
+                                                "lValueRequested": false,
+                                                "names": [],
+                                                "nodeType": "FunctionCall",
+                                                "src": "791:13:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_address",
+                                                    "typeString": "address"
+                                                }
+                                            },
+                                            {
+                                                "argumentTypes": null,
+                                                "id": 424,
+                                                "name": "_name",
+                                                "nodeType": "Identifier",
+                                                "overloadedDeclarations": [],
+                                                "referencedDeclaration": 384,
+                                                "src": "806:5:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_string_memory_ptr",
+                                                    "typeString": "string memory"
+                                                }
+                                            }
+                                        ],
+                                        "expression": {
+                                            "argumentTypes": [
+                                                {
+                                                    "typeIdentifier": "t_address_payable",
+                                                    "typeString": "address payable"
+                                                },
+                                                {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                },
+                                                {
+                                                    "typeIdentifier": "t_address",
+                                                    "typeString": "address"
+                                                },
+                                                {
+                                                    "typeIdentifier": "t_string_memory_ptr",
+                                                    "typeString": "string memory"
+                                                }
+                                            ],
+                                            "id": 417,
+                                            "name": "PollCreated",
+                                            "nodeType": "Identifier",
+                                            "overloadedDeclarations": [],
+                                            "referencedDeclaration": 382,
+                                            "src": "759:11:2",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$_t_address_$_t_string_memory_ptr_$returns$__$",
+                                                "typeString": "function (address,uint256,address,string memory)"
+                                            }
+                                        },
+                                        "id": 425,
+                                        "isConstant": false,
+                                        "isLValue": false,
+                                        "isPure": false,
+                                        "kind": "functionCall",
+                                        "lValueRequested": false,
+                                        "names": [],
+                                        "nodeType": "FunctionCall",
+                                        "src": "759:53:2",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_tuple$__$",
+                                            "typeString": "tuple()"
+                                        }
+                                    },
+                                    "id": 426,
+                                    "nodeType": "EmitStatement",
+                                    "src": "754:58:2"
+                                },
+                                {
+                                    "expression": {
+                                        "argumentTypes": null,
+                                        "arguments": [
+                                            {
+                                                "argumentTypes": null,
+                                                "expression": {
+                                                    "argumentTypes": null,
+                                                    "id": 430,
+                                                    "name": "msg",
+                                                    "nodeType": "Identifier",
+                                                    "overloadedDeclarations": [],
+                                                    "referencedDeclaration": 854,
+                                                    "src": "848:3:2",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_magic_message",
+                                                        "typeString": "msg"
+                                                    }
+                                                },
+                                                "id": 431,
+                                                "isConstant": false,
+                                                "isLValue": false,
+                                                "isPure": false,
+                                                "lValueRequested": false,
+                                                "memberName": "sender",
+                                                "nodeType": "MemberAccess",
+                                                "referencedDeclaration": null,
+                                                "src": "848:10:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_address_payable",
+                                                    "typeString": "address payable"
+                                                }
+                                            }
+                                        ],
+                                        "expression": {
+                                            "argumentTypes": [
+                                                {
+                                                    "typeIdentifier": "t_address_payable",
+                                                    "typeString": "address payable"
+                                                }
+                                            ],
+                                            "expression": {
+                                                "argumentTypes": null,
+                                                "id": 427,
+                                                "name": "poll",
+                                                "nodeType": "Identifier",
+                                                "overloadedDeclarations": [],
+                                                "referencedDeclaration": 395,
+                                                "src": "825:4:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_contract$_Poll_$358",
+                                                    "typeString": "contract Poll"
+                                                }
+                                            },
+                                            "id": 429,
+                                            "isConstant": false,
+                                            "isLValue": false,
+                                            "isPure": false,
+                                            "lValueRequested": false,
+                                            "memberName": "transferOwnership",
+                                            "nodeType": "MemberAccess",
+                                            "referencedDeclaration": 815,
+                                            "src": "825:22:2",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_function_external_nonpayable$_t_address_$returns$__$",
+                                                "typeString": "function (address) external"
+                                            }
+                                        },
+                                        "id": 432,
+                                        "isConstant": false,
+                                        "isLValue": false,
+                                        "isPure": false,
+                                        "kind": "functionCall",
+                                        "lValueRequested": false,
+                                        "names": [],
+                                        "nodeType": "FunctionCall",
+                                        "src": "825:34:2",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_tuple$__$",
+                                            "typeString": "tuple()"
+                                        }
+                                    },
+                                    "id": 433,
+                                    "nodeType": "ExpressionStatement",
+                                    "src": "825:34:2"
+                                },
+                                {
+                                    "expression": {
+                                        "argumentTypes": null,
+                                        "components": [
+                                            {
+                                                "argumentTypes": null,
+                                                "id": 434,
+                                                "name": "pollId",
+                                                "nodeType": "Identifier",
+                                                "overloadedDeclarations": [],
+                                                "referencedDeclaration": 403,
+                                                "src": "932:6:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                }
+                                            },
+                                            {
+                                                "argumentTypes": null,
+                                                "arguments": [
+                                                    {
+                                                        "argumentTypes": null,
+                                                        "id": 436,
+                                                        "name": "poll",
+                                                        "nodeType": "Identifier",
+                                                        "overloadedDeclarations": [],
+                                                        "referencedDeclaration": 395,
+                                                        "src": "948:4:2",
+                                                        "typeDescriptions": {
+                                                            "typeIdentifier": "t_contract$_Poll_$358",
+                                                            "typeString": "contract Poll"
+                                                        }
+                                                    }
+                                                ],
+                                                "expression": {
+                                                    "argumentTypes": [
+                                                        {
+                                                            "typeIdentifier": "t_contract$_Poll_$358",
+                                                            "typeString": "contract Poll"
+                                                        }
+                                                    ],
+                                                    "id": 435,
+                                                    "isConstant": false,
+                                                    "isLValue": false,
+                                                    "isPure": true,
+                                                    "lValueRequested": false,
+                                                    "nodeType": "ElementaryTypeNameExpression",
+                                                    "src": "940:7:2",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_type$_t_address_$",
+                                                        "typeString": "type(address)"
+                                                    },
+                                                    "typeName": "address"
+                                                },
+                                                "id": 437,
+                                                "isConstant": false,
+                                                "isLValue": false,
+                                                "isPure": false,
+                                                "kind": "typeConversion",
+                                                "lValueRequested": false,
+                                                "names": [],
+                                                "nodeType": "FunctionCall",
+                                                "src": "940:13:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_address",
+                                                    "typeString": "address"
+                                                }
+                                            }
+                                        ],
+                                        "id": 438,
+                                        "isConstant": false,
+                                        "isInlineArray": false,
+                                        "isLValue": false,
+                                        "isPure": false,
+                                        "lValueRequested": false,
+                                        "nodeType": "TupleExpression",
+                                        "src": "931:23:2",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_tuple$_t_uint256_$_t_address_$",
+                                            "typeString": "tuple(uint256,address)"
+                                        }
+                                    },
+                                    "functionReturnParameters": 393,
+                                    "id": 439,
+                                    "nodeType": "Return",
+                                    "src": "924:30:2"
+                                }
+                            ]
+                        },
+                        "documentation": null,
+                        "id": 441,
+                        "implemented": true,
+                        "kind": "function",
+                        "modifiers": [],
+                        "name": "createPoll",
+                        "nodeType": "FunctionDefinition",
+                        "parameters": {
+                            "id": 388,
+                            "nodeType": "ParameterList",
+                            "parameters": [
+                                {
+                                    "constant": false,
+                                    "id": 384,
+                                    "name": "_name",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 441,
+                                    "src": "508:19:2",
+                                    "stateVariable": false,
+                                    "storageLocation": "memory",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_string_memory_ptr",
+                                        "typeString": "string"
+                                    },
+                                    "typeName": {
+                                        "id": 383,
+                                        "name": "string",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "508:6:2",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_string_storage_ptr",
+                                            "typeString": "string"
+                                        }
+                                    },
+                                    "value": null,
+                                    "visibility": "internal"
+                                },
+                                {
+                                    "constant": false,
+                                    "id": 387,
+                                    "name": "_options",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 441,
+                                    "src": "529:25:2",
+                                    "stateVariable": false,
+                                    "storageLocation": "memory",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                                        "typeString": "bytes32[]"
+                                    },
+                                    "typeName": {
+                                        "baseType": {
+                                            "id": 385,
+                                            "name": "bytes32",
+                                            "nodeType": "ElementaryTypeName",
+                                            "src": "529:7:2",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_bytes32",
+                                                "typeString": "bytes32"
+                                            }
+                                        },
+                                        "id": 386,
+                                        "length": null,
+                                        "nodeType": "ArrayTypeName",
+                                        "src": "529:9:2",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_array$_t_bytes32_$dyn_storage_ptr",
+                                            "typeString": "bytes32[]"
+                                        }
+                                    },
+                                    "value": null,
+                                    "visibility": "internal"
+                                }
+                            ],
+                            "src": "507:48:2"
+                        },
+                        "returnParameters": {
+                            "id": 393,
+                            "nodeType": "ParameterList",
+                            "parameters": [
+                                {
+                                    "constant": false,
+                                    "id": 390,
+                                    "name": "",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 441,
+                                    "src": "571:4:2",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    },
+                                    "typeName": {
+                                        "id": 389,
+                                        "name": "uint",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "571:4:2",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    },
+                                    "value": null,
+                                    "visibility": "internal"
+                                },
+                                {
+                                    "constant": false,
+                                    "id": 392,
+                                    "name": "",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 441,
+                                    "src": "577:7:2",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_address",
+                                        "typeString": "address"
+                                    },
+                                    "typeName": {
+                                        "id": 391,
+                                        "name": "address",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "577:7:2",
+                                        "stateMutability": "nonpayable",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_address",
+                                            "typeString": "address"
+                                        }
+                                    },
+                                    "value": null,
+                                    "visibility": "internal"
+                                }
+                            ],
+                            "src": "570:15:2"
+                        },
+                        "scope": 504,
+                        "src": "488:474:2",
+                        "stateMutability": "nonpayable",
+                        "superFunction": null,
+                        "visibility": "public"
+                    },
+                    {
+                        "body": {
+                            "id": 460,
+                            "nodeType": "Block",
+                            "src": "1029:71:2",
+                            "statements": [
+                                {
+                                    "assignments": [
+                                        450
+                                    ],
+                                    "declarations": [
+                                        {
+                                            "constant": false,
+                                            "id": 450,
+                                            "name": "poll",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 460,
+                                            "src": "1040:9:2",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_contract$_Poll_$358",
+                                                "typeString": "contract Poll"
+                                            },
+                                            "typeName": {
+                                                "contractScope": null,
+                                                "id": 449,
+                                                "name": "Poll",
+                                                "nodeType": "UserDefinedTypeName",
+                                                "referencedDeclaration": 358,
+                                                "src": "1040:4:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_contract$_Poll_$358",
+                                                    "typeString": "contract Poll"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "id": 454,
+                                    "initialValue": {
+                                        "argumentTypes": null,
+                                        "baseExpression": {
+                                            "argumentTypes": null,
+                                            "id": 451,
+                                            "name": "polls",
+                                            "nodeType": "Identifier",
+                                            "overloadedDeclarations": [],
+                                            "referencedDeclaration": 367,
+                                            "src": "1052:5:2",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_array$_t_contract$_Poll_$358_$dyn_storage",
+                                                "typeString": "contract Poll[] storage ref"
+                                            }
+                                        },
+                                        "id": 453,
+                                        "indexExpression": {
+                                            "argumentTypes": null,
+                                            "id": 452,
+                                            "name": "pollId",
+                                            "nodeType": "Identifier",
+                                            "overloadedDeclarations": [],
+                                            "referencedDeclaration": 443,
+                                            "src": "1058:6:2",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_uint256",
+                                                "typeString": "uint256"
+                                            }
+                                        },
+                                        "isConstant": false,
+                                        "isLValue": true,
+                                        "isPure": false,
+                                        "lValueRequested": false,
+                                        "nodeType": "IndexAccess",
+                                        "src": "1052:13:2",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_contract$_Poll_$358",
+                                            "typeString": "contract Poll"
+                                        }
+                                    },
+                                    "nodeType": "VariableDeclarationStatement",
+                                    "src": "1040:25:2"
+                                },
+                                {
+                                    "expression": {
+                                        "argumentTypes": null,
+                                        "arguments": [],
+                                        "expression": {
+                                            "argumentTypes": [],
+                                            "expression": {
+                                                "argumentTypes": null,
+                                                "id": 455,
+                                                "name": "poll",
+                                                "nodeType": "Identifier",
+                                                "overloadedDeclarations": [],
+                                                "referencedDeclaration": 450,
+                                                "src": "1076:4:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_contract$_Poll_$358",
+                                                    "typeString": "contract Poll"
+                                                }
+                                            },
+                                            "id": 457,
+                                            "isConstant": false,
+                                            "isLValue": false,
+                                            "isPure": false,
+                                            "lValueRequested": false,
+                                            "memberName": "closePoll",
+                                            "nodeType": "MemberAccess",
+                                            "referencedDeclaration": 281,
+                                            "src": "1076:14:2",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_function_external_nonpayable$__$returns$__$",
+                                                "typeString": "function () external"
+                                            }
+                                        },
+                                        "id": 458,
+                                        "isConstant": false,
+                                        "isLValue": false,
+                                        "isPure": false,
+                                        "kind": "functionCall",
+                                        "lValueRequested": false,
+                                        "names": [],
+                                        "nodeType": "FunctionCall",
+                                        "src": "1076:16:2",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_tuple$__$",
+                                            "typeString": "tuple()"
+                                        }
+                                    },
+                                    "id": 459,
+                                    "nodeType": "ExpressionStatement",
+                                    "src": "1076:16:2"
+                                }
+                            ]
+                        },
+                        "documentation": null,
+                        "id": 461,
+                        "implemented": true,
+                        "kind": "function",
+                        "modifiers": [
+                            {
+                                "arguments": [
+                                    {
+                                        "argumentTypes": null,
+                                        "id": 446,
+                                        "name": "pollId",
+                                        "nodeType": "Identifier",
+                                        "overloadedDeclarations": [],
+                                        "referencedDeclaration": 443,
+                                        "src": "1021:6:2",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    }
+                                ],
+                                "id": 447,
+                                "modifierName": {
+                                    "argumentTypes": null,
+                                    "id": 445,
+                                    "name": "onlyCreator",
+                                    "nodeType": "Identifier",
+                                    "overloadedDeclarations": [],
+                                    "referencedDeclaration": 490,
+                                    "src": "1009:11:2",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_modifier$_t_uint256_$",
+                                        "typeString": "modifier (uint256)"
+                                    }
+                                },
+                                "nodeType": "ModifierInvocation",
+                                "src": "1009:19:2"
+                            }
+                        ],
+                        "name": "closePoll",
+                        "nodeType": "FunctionDefinition",
+                        "parameters": {
+                            "id": 444,
+                            "nodeType": "ParameterList",
+                            "parameters": [
+                                {
+                                    "constant": false,
+                                    "id": 443,
+                                    "name": "pollId",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 461,
+                                    "src": "989:11:2",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    },
+                                    "typeName": {
+                                        "id": 442,
+                                        "name": "uint",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "989:4:2",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    },
+                                    "value": null,
+                                    "visibility": "internal"
+                                }
+                            ],
+                            "src": "988:13:2"
+                        },
+                        "returnParameters": {
+                            "id": 448,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "1029:0:2"
+                        },
+                        "scope": 504,
+                        "src": "970:130:2",
+                        "stateMutability": "nonpayable",
+                        "superFunction": null,
+                        "visibility": "public"
+                    },
+                    {
+                        "body": {
+                            "id": 472,
+                            "nodeType": "Block",
+                            "src": "1165:50:2",
+                            "statements": [
+                                {
+                                    "expression": {
+                                        "argumentTypes": null,
+                                        "baseExpression": {
+                                            "argumentTypes": null,
+                                            "id": 467,
+                                            "name": "pollByOwners",
+                                            "nodeType": "Identifier",
+                                            "overloadedDeclarations": [],
+                                            "referencedDeclaration": 372,
+                                            "src": "1183:12:2",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_mapping$_t_address_$_t_array$_t_uint256_$dyn_storage_$",
+                                                "typeString": "mapping(address => uint256[] storage ref)"
+                                            }
+                                        },
+                                        "id": 470,
+                                        "indexExpression": {
+                                            "argumentTypes": null,
+                                            "expression": {
+                                                "argumentTypes": null,
+                                                "id": 468,
+                                                "name": "msg",
+                                                "nodeType": "Identifier",
+                                                "overloadedDeclarations": [],
+                                                "referencedDeclaration": 854,
+                                                "src": "1196:3:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_magic_message",
+                                                    "typeString": "msg"
+                                                }
+                                            },
+                                            "id": 469,
+                                            "isConstant": false,
+                                            "isLValue": false,
+                                            "isPure": false,
+                                            "lValueRequested": false,
+                                            "memberName": "sender",
+                                            "nodeType": "MemberAccess",
+                                            "referencedDeclaration": null,
+                                            "src": "1196:10:2",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_address_payable",
+                                                "typeString": "address payable"
+                                            }
+                                        },
+                                        "isConstant": false,
+                                        "isLValue": true,
+                                        "isPure": false,
+                                        "lValueRequested": false,
+                                        "nodeType": "IndexAccess",
+                                        "src": "1183:24:2",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_array$_t_uint256_$dyn_storage",
+                                            "typeString": "uint256[] storage ref"
+                                        }
+                                    },
+                                    "functionReturnParameters": 466,
+                                    "id": 471,
+                                    "nodeType": "Return",
+                                    "src": "1176:31:2"
+                                }
+                            ]
+                        },
+                        "documentation": null,
+                        "id": 473,
+                        "implemented": true,
+                        "kind": "function",
+                        "modifiers": [],
+                        "name": "getMyPolls",
+                        "nodeType": "FunctionDefinition",
+                        "parameters": {
+                            "id": 462,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "1127:2:2"
+                        },
+                        "returnParameters": {
+                            "id": 466,
+                            "nodeType": "ParameterList",
+                            "parameters": [
+                                {
+                                    "constant": false,
+                                    "id": 465,
+                                    "name": "",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 473,
+                                    "src": "1150:13:2",
+                                    "stateVariable": false,
+                                    "storageLocation": "memory",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
+                                        "typeString": "uint256[]"
+                                    },
+                                    "typeName": {
+                                        "baseType": {
+                                            "id": 463,
+                                            "name": "uint",
+                                            "nodeType": "ElementaryTypeName",
+                                            "src": "1150:4:2",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_uint256",
+                                                "typeString": "uint256"
+                                            }
+                                        },
+                                        "id": 464,
+                                        "length": null,
+                                        "nodeType": "ArrayTypeName",
+                                        "src": "1150:6:2",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                                            "typeString": "uint256[]"
+                                        }
+                                    },
+                                    "value": null,
+                                    "visibility": "internal"
+                                }
+                            ],
+                            "src": "1149:15:2"
+                        },
+                        "scope": 504,
+                        "src": "1108:107:2",
+                        "stateMutability": "view",
+                        "superFunction": null,
+                        "visibility": "public"
+                    },
+                    {
+                        "body": {
+                            "id": 489,
+                            "nodeType": "Block",
+                            "src": "1258:75:2",
+                            "statements": [
+                                {
+                                    "expression": {
+                                        "argumentTypes": null,
+                                        "arguments": [
+                                            {
+                                                "argumentTypes": null,
+                                                "commonType": {
+                                                    "typeIdentifier": "t_address",
+                                                    "typeString": "address"
+                                                },
+                                                "id": 485,
+                                                "isConstant": false,
+                                                "isLValue": false,
+                                                "isPure": false,
+                                                "lValueRequested": false,
+                                                "leftExpression": {
+                                                    "argumentTypes": null,
+                                                    "arguments": [],
+                                                    "expression": {
+                                                        "argumentTypes": [],
+                                                        "expression": {
+                                                            "argumentTypes": null,
+                                                            "baseExpression": {
+                                                                "argumentTypes": null,
+                                                                "id": 478,
+                                                                "name": "polls",
+                                                                "nodeType": "Identifier",
+                                                                "overloadedDeclarations": [],
+                                                                "referencedDeclaration": 367,
+                                                                "src": "1277:5:2",
+                                                                "typeDescriptions": {
+                                                                    "typeIdentifier": "t_array$_t_contract$_Poll_$358_$dyn_storage",
+                                                                    "typeString": "contract Poll[] storage ref"
+                                                                }
+                                                            },
+                                                            "id": 480,
+                                                            "indexExpression": {
+                                                                "argumentTypes": null,
+                                                                "id": 479,
+                                                                "name": "pollId",
+                                                                "nodeType": "Identifier",
+                                                                "overloadedDeclarations": [],
+                                                                "referencedDeclaration": 475,
+                                                                "src": "1283:6:2",
+                                                                "typeDescriptions": {
+                                                                    "typeIdentifier": "t_uint256",
+                                                                    "typeString": "uint256"
+                                                                }
+                                                            },
+                                                            "isConstant": false,
+                                                            "isLValue": true,
+                                                            "isPure": false,
+                                                            "lValueRequested": false,
+                                                            "nodeType": "IndexAccess",
+                                                            "src": "1277:13:2",
+                                                            "typeDescriptions": {
+                                                                "typeIdentifier": "t_contract$_Poll_$358",
+                                                                "typeString": "contract Poll"
+                                                            }
+                                                        },
+                                                        "id": 481,
+                                                        "isConstant": false,
+                                                        "isLValue": false,
+                                                        "isPure": false,
+                                                        "lValueRequested": false,
+                                                        "memberName": "owner",
+                                                        "nodeType": "MemberAccess",
+                                                        "referencedDeclaration": 764,
+                                                        "src": "1277:19:2",
+                                                        "typeDescriptions": {
+                                                            "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
+                                                            "typeString": "function () view external returns (address)"
+                                                        }
+                                                    },
+                                                    "id": 482,
+                                                    "isConstant": false,
+                                                    "isLValue": false,
+                                                    "isPure": false,
+                                                    "kind": "functionCall",
+                                                    "lValueRequested": false,
+                                                    "names": [],
+                                                    "nodeType": "FunctionCall",
+                                                    "src": "1277:21:2",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_address",
+                                                        "typeString": "address"
+                                                    }
+                                                },
+                                                "nodeType": "BinaryOperation",
+                                                "operator": "==",
+                                                "rightExpression": {
+                                                    "argumentTypes": null,
+                                                    "expression": {
+                                                        "argumentTypes": null,
+                                                        "id": 483,
+                                                        "name": "msg",
+                                                        "nodeType": "Identifier",
+                                                        "overloadedDeclarations": [],
+                                                        "referencedDeclaration": 854,
+                                                        "src": "1302:3:2",
+                                                        "typeDescriptions": {
+                                                            "typeIdentifier": "t_magic_message",
+                                                            "typeString": "msg"
+                                                        }
+                                                    },
+                                                    "id": 484,
+                                                    "isConstant": false,
+                                                    "isLValue": false,
+                                                    "isPure": false,
+                                                    "lValueRequested": false,
+                                                    "memberName": "sender",
+                                                    "nodeType": "MemberAccess",
+                                                    "referencedDeclaration": null,
+                                                    "src": "1302:10:2",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_address_payable",
+                                                        "typeString": "address payable"
+                                                    }
+                                                },
+                                                "src": "1277:35:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_bool",
+                                                    "typeString": "bool"
+                                                }
+                                            }
+                                        ],
+                                        "expression": {
+                                            "argumentTypes": [
+                                                {
+                                                    "typeIdentifier": "t_bool",
+                                                    "typeString": "bool"
+                                                }
+                                            ],
+                                            "id": 477,
+                                            "name": "require",
+                                            "nodeType": "Identifier",
+                                            "overloadedDeclarations": [
+                                                857,
+                                                858
+                                            ],
+                                            "referencedDeclaration": 857,
+                                            "src": "1269:7:2",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                                                "typeString": "function (bool) pure"
+                                            }
+                                        },
+                                        "id": 486,
+                                        "isConstant": false,
+                                        "isLValue": false,
+                                        "isPure": false,
+                                        "kind": "functionCall",
+                                        "lValueRequested": false,
+                                        "names": [],
+                                        "nodeType": "FunctionCall",
+                                        "src": "1269:44:2",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_tuple$__$",
+                                            "typeString": "tuple()"
+                                        }
+                                    },
+                                    "id": 487,
+                                    "nodeType": "ExpressionStatement",
+                                    "src": "1269:44:2"
+                                },
+                                {
+                                    "id": 488,
+                                    "nodeType": "PlaceholderStatement",
+                                    "src": "1324:1:2"
+                                }
+                            ]
+                        },
+                        "documentation": null,
+                        "id": 490,
+                        "name": "onlyCreator",
+                        "nodeType": "ModifierDefinition",
+                        "parameters": {
+                            "id": 476,
+                            "nodeType": "ParameterList",
+                            "parameters": [
+                                {
+                                    "constant": false,
+                                    "id": 475,
+                                    "name": "pollId",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 490,
+                                    "src": "1245:11:2",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    },
+                                    "typeName": {
+                                        "id": 474,
+                                        "name": "uint",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "1245:4:2",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    },
+                                    "value": null,
+                                    "visibility": "internal"
+                                }
+                            ],
+                            "src": "1244:13:2"
+                        },
+                        "src": "1223:110:2",
+                        "visibility": "internal"
+                    },
+                    {
+                        "body": {
+                            "id": 502,
+                            "nodeType": "Block",
+                            "src": "1403:47:2",
+                            "statements": [
+                                {
+                                    "expression": {
+                                        "argumentTypes": null,
+                                        "expression": {
+                                            "argumentTypes": null,
+                                            "arguments": [
+                                                {
+                                                    "argumentTypes": null,
+                                                    "id": 498,
+                                                    "name": "this",
+                                                    "nodeType": "Identifier",
+                                                    "overloadedDeclarations": [],
+                                                    "referencedDeclaration": 876,
+                                                    "src": "1429:4:2",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_contract$_PollingStation_$504",
+                                                        "typeString": "contract PollingStation"
+                                                    }
+                                                }
+                                            ],
+                                            "expression": {
+                                                "argumentTypes": [
+                                                    {
+                                                        "typeIdentifier": "t_contract$_PollingStation_$504",
+                                                        "typeString": "contract PollingStation"
+                                                    }
+                                                ],
+                                                "id": 497,
+                                                "isConstant": false,
+                                                "isLValue": false,
+                                                "isPure": true,
+                                                "lValueRequested": false,
+                                                "nodeType": "ElementaryTypeNameExpression",
+                                                "src": "1421:7:2",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_type$_t_address_$",
+                                                    "typeString": "type(address)"
+                                                },
+                                                "typeName": "address"
+                                            },
+                                            "id": 499,
+                                            "isConstant": false,
+                                            "isLValue": false,
+                                            "isPure": false,
+                                            "kind": "typeConversion",
+                                            "lValueRequested": false,
+                                            "names": [],
+                                            "nodeType": "FunctionCall",
+                                            "src": "1421:13:2",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_address",
+                                                "typeString": "address"
+                                            }
+                                        },
+                                        "id": 500,
+                                        "isConstant": false,
+                                        "isLValue": false,
+                                        "isPure": false,
+                                        "lValueRequested": false,
+                                        "memberName": "balance",
+                                        "nodeType": "MemberAccess",
+                                        "referencedDeclaration": null,
+                                        "src": "1421:21:2",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    },
+                                    "functionReturnParameters": 496,
+                                    "id": 501,
+                                    "nodeType": "Return",
+                                    "src": "1414:28:2"
+                                }
+                            ]
+                        },
+                        "documentation": null,
+                        "id": 503,
+                        "implemented": true,
+                        "kind": "function",
+                        "modifiers": [
+                            {
+                                "arguments": null,
+                                "id": 493,
+                                "modifierName": {
+                                    "argumentTypes": null,
+                                    "id": 492,
+                                    "name": "onlyOwner",
+                                    "nodeType": "Identifier",
+                                    "overloadedDeclarations": [],
+                                    "referencedDeclaration": 773,
+                                    "src": "1375:9:2",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_modifier$__$",
+                                        "typeString": "modifier ()"
+                                    }
+                                },
+                                "nodeType": "ModifierInvocation",
+                                "src": "1375:9:2"
+                            }
+                        ],
+                        "name": "getBalance",
+                        "nodeType": "FunctionDefinition",
+                        "parameters": {
+                            "id": 491,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "1360:2:2"
+                        },
+                        "returnParameters": {
+                            "id": 496,
+                            "nodeType": "ParameterList",
+                            "parameters": [
+                                {
+                                    "constant": false,
+                                    "id": 495,
+                                    "name": "",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 503,
+                                    "src": "1394:7:2",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    },
+                                    "typeName": {
+                                        "id": 494,
+                                        "name": "uint256",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "1394:7:2",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    },
+                                    "value": null,
+                                    "visibility": "internal"
+                                }
+                            ],
+                            "src": "1393:9:2"
+                        },
+                        "scope": 504,
+                        "src": "1341:109:2",
+                        "stateMutability": "view",
+                        "superFunction": null,
+                        "visibility": "public"
+                    }
+                ],
+                "scope": 505,
+                "src": "257:1197:2"
+            }
+        ],
+        "src": "0:1454:2"
+    },
+    "functionHashes": {
+        "addClaimer(address)": "2ea66401",
+        "claim()": "4e71d92d",
+        "closePoll(uint256)": "9534e637",
+        "createPoll(string,bytes32[])": "00f63722",
+        "debugnow()": "e1aa071c",
+        "getBalance()": "12065fe0",
+        "getExpirationTime()": "e23a845a",
+        "getMyPolls()": "170b5add",
+        "isClaimable()": "74478bb3",
+        "isClaimer(address)": "10a8aecd",
+        "isOwner()": "8f32d59b",
+        "owner()": "8da5cb5b",
+        "polls(uint256)": "ac2f0074",
+        "read()": "57de26a4",
+        "removeClaimer(address)": "f0490b8a",
+        "renounceOwnership()": "715018a6",
+        "setExpirationTime(uint256)": "c0cc365d",
+        "transferOwnership(address)": "f2fde38b"
+    },
+    "gasEstimates": {
+        "creation": {
+            "codeDepositCost": "1486000",
+            "executionCost": "23908",
+            "totalCost": "1509908"
+        },
+        "external": {
+            "addClaimer(address)": "24072",
+            "claim()": "26101",
+            "closePoll(uint256)": "infinite",
+            "createPoll(string,bytes32[])": "infinite",
+            "debugnow()": "241",
+            "getBalance()": "1140",
+            "getExpirationTime()": "1064",
+            "getMyPolls()": "infinite",
+            "isClaimable()": "2973",
+            "isClaimer(address)": "1200",
+            "isOwner()": "1072",
+            "owner()": "1060",
+            "polls(uint256)": "2059",
+            "read()": "2931",
+            "removeClaimer(address)": "24116",
+            "renounceOwnership()": "24281",
+            "setExpirationTime(uint256)": "23237",
+            "transferOwnership(address)": "24468"
+        }
+    }
+}
