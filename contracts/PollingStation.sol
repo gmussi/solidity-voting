@@ -15,7 +15,7 @@ contract PollingStation is Claimable {
     function createPoll(string memory _name, bytes32[] memory _options) public returns(uint, address) {
         Poll poll = new Poll(_name, _options);
                 
-        uint pollId = polls.push(poll);
+        uint pollId = polls.push(poll) - 1;
         pollByOwners[msg.sender].push(pollId);
 
         emit PollCreated(msg.sender, pollId, address(poll), _name);
@@ -39,7 +39,7 @@ contract PollingStation is Claimable {
         _;
     }
 
-    function getBalance() public view onlyOwner returns (uint256) {
-        return address(this).balance;
-    } 
+    function getCount() public view returns(uint count) {
+        return polls.length;
+    }
 }

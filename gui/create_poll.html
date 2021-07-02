@@ -1,0 +1,135 @@
+<html>
+    <head>
+        <title>Solidity Voting - Create Poll</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.3.5/web3.min.js" integrity="sha512-S/O+gH5szs/+/dUylm15Jp/JZJsIoWlpSVMwT6yAS4Rh7kazaRUxSzFBwnqE2/jBphcr7xovTQJaopiEZAzi+A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="/app.js"></script>
+        <style>
+        .b-example-divider {
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+        body {
+            background-color: #212529!important;
+        }
+        main {
+            background-color: white;
+        }
+        </style>
+    </head>
+    <body>
+        <main>
+            <header class="p-3 bg-dark text-white">
+                <div class="container">
+                    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <li><a href="/my_polls.html" class="nav-link px-2 text-secondary">My polls</a></li>
+                        <li><a href="/all_polls.html" class="nav-link px-2 text-secondary">All polls</a></li>
+                        <li><a href="/create_poll.html" class="nav-link px-2 text-white">Create poll</a></li>
+                    </ul>
+                    
+                    <div class="text-end">
+                        My address: <span id="my_address">Loading ...</span>
+                    </div>
+                    </div>
+                </div>
+            </header>
+            <div class="b-example-divider"></div>
+            <div class="container">
+                <h1>Create Poll</h1> 
+            </div>
+            <div class="container">
+                <form id="poll_form">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="poll_name" class="form-label">Poll name</label>
+                            <input type="text" id="poll_name" class="form-control" placeholder="Poll name" required></input>
+                        </div>
+                        <div class="col-12">
+                            <p>Options</p>
+                        </div>
+                        <div id="poll_options" style="margin-top: 0;">
+
+                        </div>
+                        <div class="col-12">
+                            <button type="button" class="btn btn-secondary" id="add_option">Add option</button>
+                            <button type="submit" class="btn btn-primary" id="create_poll">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="b-example-divider"></div>
+        </main>
+    </body>
+    <script>
+        const removeOption = (index) => {
+            document.getElementById('poll_options').removeChild(GLOBAL.options[index]);
+            GLOBAL.options.splice(index, 1);
+
+            let i = 0;
+            for (let optionDiv of document.getElementById('poll_options').children) {
+                optionDiv.children[0].innerHTML = `Option ${i++}`;
+            }
+        };
+
+        const addOption = () => {
+            let count = GLOBAL.options.length;
+
+            let optionDiv = document.createElement("div");
+            optionDiv.className = "mb-3 row";
+            optionDiv.id = `option_${count}`;
+            optionDiv.innerHTML = `
+                <label for="option_input_${count}" class="col-sm-1 col-form-label">Option ${count}</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="option_input_${count}" required>
+                </div>
+                <div class="col-sm-1">
+                    <button onclick="removeOption(${count})" type="button" class="btn btn-secondary">X</button>
+                </div>
+            `;
+            GLOBAL.options.push(optionDiv);
+            document.getElementById("poll_options").appendChild(optionDiv);
+        }
+
+        const createPoll = async (event) => {
+            console.log("submit")
+            event.preventDefault();
+
+            let name = document.getElementById("poll_name").value;
+            let options = [];
+
+            for (let i = 0; i < GLOBAL.options.length; i++) {
+                options.push(web3.utils.asciiToHex(document.getElementById(`option_input_${i}`).value));
+            }
+
+            let receipt = await pollingStation.methods.createPoll(name, options).send({from: GLOBAL.myaddress});
+            let {pollId, pollAddr, name: pollName, creator} = receipt.events.PollCreated.returnValues;
+
+            window.location = "/poll.html?address=" + pollAddr;
+        }
+
+        window.addEventListener('load', async () => {
+            if (ethEnabled()) {
+                await loadConfig();
+
+                setInterval(() => {
+                    let selectedAddress = web3.currentProvider.selectedAddress;
+                    if (!GLOBAL.myaddress || GLOBAL.myaddress.toLowerCase() != selectedAddress.toLowerCase()) {
+                        document.getElementById("my_address").innerHTML = GLOBAL.myaddress = selectedAddress;
+                        pollingStation = new web3.eth.Contract(GLOBAL.POLLSTATION_ABI, GLOBAL.POLLSTATION_ADDRESS, {from: selectedAddress});
+                    }
+                }, 1000);
+            }
+
+            document.getElementById("add_option").onclick = addOption;
+            document.getElementById("poll_form").addEventListener("submit", createPoll);
+
+            addOption();
+            addOption();
+        });
+    </script>
+</html>

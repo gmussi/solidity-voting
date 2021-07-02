@@ -18,7 +18,7 @@ contract Poll is Claimable {
     string public name; // name of this poll - is this necessary?
 
     bytes32[] public options; // options that can be voted on
-    mapping(bytes32 => uint) public voteCounts; // number of votes for each option
+    uint[] public voteCounts; // number of votes for each option
 
     mapping(address => Vote) private votes; // stores the votes of everyone
 
@@ -53,7 +53,7 @@ contract Poll is Claimable {
         name = _name;
         for (uint i = 0; i < _options.length; i++) {
             options.push(_options[i]);
-            voteCounts[_options[i]] = 0;
+            voteCounts.push(0);
         }
     }
 
@@ -61,15 +61,15 @@ contract Poll is Claimable {
      * Stores a vote from the message sender. 
      * Each address can vote only once and only as long as the poll is not closed.
      * Each address can also sell their voting rights for others, which allows the buyer to vote.
-     * @param _option a bytes32 representing the option to vote.
+     * @param _optionIndex a bytes32 representing the option to vote.
      * @dev Refer to `options` property  
      * @param _voter address of the voter this vote refers to. Message sender must own that right
      */
-    function vote(bytes32 _option, address _voter) public notVoted(_voter) ownsVote(_voter) pollOpen {
-        voteCounts[_option]++;
+    function vote(uint _optionIndex, address _voter) public notVoted(_voter) ownsVote(_voter) pollOpen {
+        voteCounts[_optionIndex]++;
         votes[_voter].used = true;
 
-        emit NewVote(_option, msg.sender);
+        emit NewVote(options[_optionIndex], msg.sender);
     } 
 
     /**
@@ -132,17 +132,6 @@ contract Poll is Claimable {
     }
 
     /**
-     * Returns the count for each votes
-     */
-    function countVotes() public view returns (uint[] memory) {
-        uint[] memory results;
-        for (uint i = 0; i < options.length; i++) {
-            results[i] = voteCounts[options[i]];
-        }
-        return results;
-    }
-
-    /**
      * Function modifier that checks if the poll is still opened.
      */
     modifier pollOpen () {
@@ -176,5 +165,9 @@ contract Poll is Claimable {
 
     function getOptions() public view returns (bytes32[] memory) {
         return options;
+    }
+
+    function getVoteCount() public view returns(uint[] memory) {
+        return voteCounts;
     }
  }
