@@ -40,13 +40,31 @@
             </header>
             <div class="b-example-divider"></div>
             <div class="container">
-                <h1>Loading...</h1> 
+                <h1>What fruit is better?</h1> 
+                <p>Owner: 0x91827029187309872130138972310987321</p>
+                <p>Poll is <strong>OPEN</strong></p>
+                <div class="card">
+                    <div class="card-header">
+                        Options
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Banana</p>
+                    </div>
+                </div>
             </div>
             <div class="b-example-divider"></div>
         </main>
     </body>
     <script>
-        
+        const loadPoll = async () =>  {
+            GLOBAL.pollAddr = window.location.search.substr(9);
+
+            let result = await fetch(`/api/poll/${GLOBAL.pollAddr}`);
+            let poll = await result.json();
+
+            console.log(poll);
+        };
+
         window.addEventListener('load', async () => {
             if (ethEnabled()) {
                 await loadConfig();
@@ -57,6 +75,8 @@
                         document.getElementById("my_address").innerHTML = GLOBAL.myaddress = selectedAddress;
                     }
                 }, 1000);
+
+                loadPoll();
             }
         });
     </script>

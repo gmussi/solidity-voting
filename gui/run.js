@@ -14,7 +14,7 @@ const web3 = new Web3(provider);
 const pollingStation = new web3.eth.Contract(POLLSTATION_ABI, POLLSTATION_ADDRESS);
 
 // serve html files
-app.use(express.static("."))
+app.use(express.static("."));
 
 // serve abi files
 app.use("/config", (req, res) => {
@@ -35,48 +35,41 @@ app.use("/api/mypolls/:address", async (req, res) => {
     let pollIds = await pollingStation.methods.getMyPolls().call({from: address});
 
     let output = [];
-
     
     for (let i = 0; i < pollIds.length; i++) {
         try { 
             let pollAddr = await pollingStation.methods.polls(parseInt(pollIds[i])).call({from: address});
             console.log("address", pollAddr)
-            let poll = new web3.eth.Contract(POLL_ABI, pollAddr);
-
-            let name = await poll.methods.name().call();
-            let options = await poll.methods.getOptions().call();
-            let closed = await poll.methods.closed().call();
-            //let voteCount = await poll.methods.getVoteCount().call();
-
-            output.push({
-                pollAddr: pollAddr,
-                pollId: pollIds[i],
-                name: name,
-                options: options,
-                closed: closed
-            });
+            
+            let poll = await loadPoll(pollAddr);
+            output.push(poll);
         } catch (err) {
             console.log(err);
         }
     }
-
-    
     res.send(output);
 });
 
-// get all polls
-app.use("/api/polls/:includeOpen/:includeClosed", async (req, res) => {
-    let count = await pollingStation.methods.getCount().call();
-
-    let polls = [];
-    for (let i = 0; i < count; i++) {
-        //let pollAddr = pollingStation.methods.polls()
-    }
-
-    res.send(polls);
+app.use("/api/poll/:pollAddr", async (req, res) => {
+    res.send(await loadPoll(req.params.pollAddr));
 });
 
 app.listen(3000, () => {
     console.log("Listening on port 3000");
 });
 
+const loadPoll = async (pollAddr) => {
+    let poll = new web3.eth.Contract(POLL_ABI, pollAddr);
+
+    let name = await poll.methods.name().call();
+    let options = await poll.methods.getOptions().call();
+    let closed = await poll.methods.closed().call();
+    //let voteCount = await poll.methods.getVoteCount().call();
+
+    return {
+        name: name,
+        pollAddr: pollAddr,
+        options : options,
+        closed : closed
+    };
+}
