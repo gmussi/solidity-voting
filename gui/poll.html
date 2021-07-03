@@ -40,15 +40,26 @@
             </header>
             <div class="b-example-divider"></div>
             <div class="container">
-                <h1>What fruit is better?</h1> 
-                <p>Owner: 0x91827029187309872130138972310987321</p>
-                <p>Poll is <strong>OPEN</strong></p>
-                <div class="card">
-                    <div class="card-header">
-                        Options
+                <h1 id="poll_name">Loading...</h1> 
+                <p>Owner: <span id="poll_owner">Loading...</span></p>
+                <p>Poll is <strong id="poll_closed">Loading...</strong></p>
+                <h2>Options</h2>
+            </div>
+            <div class="container" id="poll_options">
+            </div>
+            <div class="container">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3">
+                    <div class="col">
+                        <h2>My votes</h2>
+                        <div id="my_votes">
+                            Loading...
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <p class="card-text">Banana</p>
+                    <div class="col ">
+                        <h2>Votes for Sale</h2>
+                        <div id="votes_for_sale">
+                            Loading...
+                        </div>
                     </div>
                 </div>
             </div>
@@ -56,13 +67,43 @@
         </main>
     </body>
     <script>
+        const loadVotes = async () => {
+            console.log(GLOBAL)
+            let result = await fetch(`/api/votes/${GLOBAL.pollAddr}/${GLOBAL.myaddress}`);
+            let votes = await result.json();
+
+            console.log(votes);
+        };
+
         const loadPoll = async () =>  {
             GLOBAL.pollAddr = window.location.search.substr(9);
 
             let result = await fetch(`/api/poll/${GLOBAL.pollAddr}`);
             let poll = await result.json();
 
-            console.log(poll);
+            document.getElementById("poll_name").innerHTML = poll.name;
+            document.getElementById("poll_closed").innerHTML = poll.closed ? "Closed" : "Open";
+            document.getElementById("poll_owner").innerHTML = poll.owner;
+
+            for (let option of poll.options) {
+                let li = document.createElement("li");
+                li.className = "list-group-item d-flex justify-content-between align-items-start";
+                li.innerHTML = `
+                    <div class="ms-2 me-auto">${option}</div>
+                    <button type="button" class="btn btn-secondary" disabled>Vote</button>
+                `;
+
+                let progress = document.createElement("div");
+                progress.className = "progress";
+                progress.innerHTML = `
+                    <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                `;
+                document.getElementById("poll_options").appendChild(li);
+                document.getElementById("poll_options").appendChild(progress);
+
+                loadVotes();
+            }
+
         };
 
         window.addEventListener('load', async () => {
@@ -73,10 +114,11 @@
                     let selectedAddress = web3.currentProvider.selectedAddress;
                     if (!GLOBAL.myaddress || GLOBAL.myaddress.toLowerCase() != selectedAddress.toLowerCase()) {
                         document.getElementById("my_address").innerHTML = GLOBAL.myaddress = selectedAddress;
+                        loadPoll();
                     }
                 }, 1000);
 
-                loadPoll();
+                
             }
         });
     </script>

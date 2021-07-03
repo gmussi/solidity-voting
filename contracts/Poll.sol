@@ -170,4 +170,9 @@ contract Poll is Claimable {
     function getVoteCount() public view returns(uint[] memory) {
         return voteCounts;
     }
+
+    function getVote(address _voter) public view returns(bool, bool, uint, address) {
+        Vote storage _vote = votes[_voter];
+        return (_vote.used, _vote.forSale, _vote.price, _vote.owner);
+    }
  }
