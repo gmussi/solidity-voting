@@ -4,7 +4,7 @@ const fs = require('fs');
 const app = express();
 
 // address of contract from 'truffle deploy'
-const POLLSTATION_ADDRESS = "0xde02035F3Ad66f5680ac7a40126DA046e0304cAC";
+const POLLSTATION_ADDRESS = "0xB0f80368D6C69C5B91931DE41B62e54A851d0E0A";
 const POLLSTATION_ABI = JSON.parse(fs.readFileSync("../bin/contracts/PollingStation.abi"));
 const POLL_ABI = JSON.parse(fs.readFileSync("../bin/contracts/Poll.abi"));
 const ENDPOINT = "http://127.0.0.1:7545";
@@ -28,7 +28,7 @@ app.use("/config", (req, res) => {
 // get my polls
 app.use("/api/mypolls/:address", async (req, res) => {
     let address = req.params.address;
-    if (!address) {
+    if (!web3.utils.isAddress(address)) {
         return;
     }
 
@@ -50,20 +50,92 @@ app.use("/api/mypolls/:address", async (req, res) => {
     res.send(output);
 });
 
+// get all polls
+app.use("/api/polls", async (req, res) => {
+    let count = await pollingStation.methods.getCount().call();
+    let polls = [];
+    for (let i = 0; i < count; i++) {
+        let pollAddr = await pollingStation.methods.polls(i).call();
+        let poll = await loadPoll(pollAddr);
+        polls.push(poll);
+    }
+    res.send(polls);
+});
+
 app.use("/api/poll/:pollAddr", async (req, res) => {
     res.send(await loadPoll(req.params.pollAddr));
 });
 
-app.use("/api/votes/:pollAddr/:userAddr", async (req, res) => {
+/**
+ * Gets all votes currently for sale
+ * @dev This method is highly innefficient.
+ * @todo Listen to events and cache this information locally for all polls
+ */
+app.use("/api/votes/:pollAddr/sell", async (req, res) => {
     let poll = new web3.eth.Contract(POLL_ABI, req.params.pollAddr);
 
-    try {
-        let myvote = await poll.methods.getVote(req.params.userAddr).call();
-        console.log(myvote)
+    // find all votes ever put on sale
+    let events = await poll.getPastEvents("VoteForSale", {
+        fromBlock: "earliest"
+    });
 
+    let votes = [];
+    let addressesChecked = [];
+    // check if the votes are still for sale
+    for (let event of events) {
+        let voteAddr = event.returnValues.voteAddr;
+        if (addressesChecked.indexOf(voteAddr) == -1) {
+            addressesChecked.push(voteAddr);
+
+            let vote = await loadVote(poll, voteAddr);
+            if (!vote.used && vote.forSale) {
+                votes.push(vote);
+            }
+        }
+    }
+
+    res.send(votes);
+});
+
+app.use("/api/votes/:pollAddr/:userAddr", async (req, res) => {
+    let poll = new web3.eth.Contract(POLL_ABI, req.params.pollAddr);
+    let userAddr = req.params.userAddr;
+    try {
         let votes = [];
-        votes.push(myvote);
-        res.send(myvote);
+        let addressesChecked = [];
+
+        let vote = await loadVote(poll, userAddr);
+        addressesChecked.push(userAddr);
+        let voteOwner = vote.owner === "0x0000000000000000000000000000000000000000" ? vote.address : vote.owner;
+        console.log("a", vote)
+        if (!vote.used && userAddr.toLowerCase() === voteOwner.toLowerCase()) {
+            votes.push(vote);
+        }
+
+        // find all votes ever bought by this address
+        let events = await poll.getPastEvents("VoteOwnershipChanged", {
+            fromBlock: "earliest",
+            filter: {
+                buyer: req.params.userAddr
+            }
+        });    
+        
+        for (let event of events) {
+            let voteAddr = event.returnValues.voteAddr;
+            console.log("c", event)
+            if (addressesChecked.indexOf(voteAddr) == -1) {
+                addressesChecked.push(voteAddr);
+    
+                vote = await loadVote(poll, voteAddr);
+                console.log("b", vote)
+                voteOwner = vote.owner === "0x0000000000000000000000000000000000000000" ? vote.address : vote.owner;
+                if (!vote.used && userAddr.toLowerCase() === voteOwner.toLowerCase()) {
+                    votes.push(vote);
+                }
+            }
+        }
+
+        res.send(votes);
     } catch (err) {
         console.log(err);
     }
@@ -89,4 +161,15 @@ const loadPoll = async (pollAddr) => {
         closed : closed,
         owner: owner
     };
+}
+
+const loadVote = async (poll, address) => {
+    let {0: used, 1: forSale, 2: price, 3: owner} = await poll.methods.getVote(address).call();
+    return {
+        used: used, 
+        forSale: forSale,
+        price: price,
+        owner: owner,
+        address: address
+    }
 }

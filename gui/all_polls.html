@@ -27,8 +27,8 @@
                 <div class="container">
                     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                        <li><a href="/my_polls.html" class="nav-link px-2 text-white">My polls</a></li>
-                        <li><a href="/all_polls.html" class="nav-link px-2 text-secondary">All polls</a></li>
+                        <li><a href="/my_polls.html" class="nav-link px-2 text-secondary">My polls</a></li>
+                        <li><a href="/all_polls.html" class="nav-link px-2 text-white">All polls</a></li>
                         <li><a href="/create_poll.html" class="nav-link px-2 text-secondary">Create poll</a></li>
                     </ul>
             
@@ -40,7 +40,7 @@
             </header>
             <div class="b-example-divider"></div>
             <div class="container">
-                <h1>My Polls</h1> 
+                <h1>All Polls</h1> 
             </div>
             <div class="container" id="my_polls">
                 Loading ...
@@ -69,7 +69,8 @@
             div.innerHTML = `
                 <div class="card-body">
                     <h5 class="card-title"><a href="/poll.html?address=${poll.pollAddr}">${poll.name}</a></h5>
-                    <h6 class="card-subtitle mb-2 text-muted">${poll.closed ? "Closed" : "Open"}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">Owner: ${poll.owner}</h6>
+                    <h6 class="card-subtitle mb-2">${poll.closed ? "Closed" : "Open"}</h6>
                     <ol class="list-group list-group-numbered">
                         ${optionsHtml}
                     </ol>
@@ -79,11 +80,11 @@
         };
 
         const loadMyPolls = async () => {
-            let output = await fetch(`/api/mypolls/${GLOBAL.myaddress}`);
+            let output = await fetch(`/api/polls`);
             let polls = await output.json();
 
             if (polls.length < 1) {
-                document.getElementById("my_polls").innerHTML = "<p>You have not created any polls yet.</p>"
+                document.getElementById("my_polls").innerHTML = "<p>No polls were created so far.</p>"
             } else {
                 document.getElementById("my_polls").innerHTML = "";
                 for (let i = 0; i < polls.length; i++) {

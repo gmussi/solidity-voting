@@ -27,22 +27,27 @@ contract Poll is Claimable {
     /**
      * Event triggered every time a new vote is given in this poll
      */
-    event NewVote (bytes32 option, address indexed voter);
+    event NewVote (bytes32 indexed option, address indexed voteAddr, address indexed user);
 
     /**
      * Event triggered when a vote is put for sale
      */
-    event VoteForSale(address seller, uint price);
+    event VoteForSale(address indexed voteAddr, uint indexed price, address indexed user);
+
+    /**
+     * Event triggered when a vote is no longer for sale
+     */
+    event VoteNotForSale(address indexed voteAddr, address indexed user);
 
     /**
      * Event triggered when a vote is sold 
      */
-    event VoteOwnershipChanged(address seller, address buyer);
+    event VoteOwnershipChanged(address indexed voteAddr, address indexed seller, address indexed buyer);
 
     /**
      * Event triggered when the poll is closed
      */
-    event PollClosed (address pollAddr);
+    event PollClosed (address indexed pollAddr);
 
     /**
      * A poll requires a name and a bytes32 for each option.
@@ -63,13 +68,13 @@ contract Poll is Claimable {
      * Each address can also sell their voting rights for others, which allows the buyer to vote.
      * @param _optionIndex a bytes32 representing the option to vote.
      * @dev Refer to `options` property  
-     * @param _voter address of the voter this vote refers to. Message sender must own that right
+     * @param _voteAddr address of the voter this vote refers to. Message sender must own that right
      */
-    function vote(uint _optionIndex, address _voter) public notVoted(_voter) ownsVote(_voter) pollOpen {
+    function vote(uint _optionIndex, address _voteAddr) public notVoted(_voteAddr) ownsVote(_voteAddr) pollOpen {
         voteCounts[_optionIndex]++;
-        votes[_voter].used = true;
+        votes[_voteAddr].used = true;
 
-        emit NewVote(options[_optionIndex], msg.sender);
+        emit NewVote(options[_optionIndex], _voteAddr, msg.sender);
     } 
 
     /**
@@ -84,7 +89,19 @@ contract Poll is Claimable {
         _vote.price = price;
         _vote.forSale = true;
 
-        emit VoteForSale(_voteAddr, price);
+        emit VoteForSale(_voteAddr, price, msg.sender);
+    }
+
+    /**
+     * Makes a vote no longer available for sale
+     * @param _voteAddr The vote address currently for sale
+     */
+    function stopSelling(address _voteAddr) public notVoted(_voteAddr) ownsVote(_voteAddr) forSale(_voteAddr) pollOpen {
+        Vote storage _vote = votes[_voteAddr];
+        _vote.price = 0;
+        _vote.forSale = false;
+
+        emit VoteNotForSale(_voteAddr, msg.sender);
     }
 
     /**
@@ -95,12 +112,13 @@ contract Poll is Claimable {
      */
     function buysVote(address payable _voteAddr) public payable notVoted(_voteAddr) forSale(_voteAddr) pollOpen {
         Vote storage _vote = votes[_voteAddr];
+        address payable seller = _vote.owner;
 
         require(msg.value >= _vote.price, "Not enough funds transferred");
         
         uint change = msg.value - _vote.price;
 
-        _voteAddr.transfer(_vote.price); // sends the price value to the seller
+        seller.transfer(_vote.price); // sends the price value to the seller
 
         if (change > 0) {
             msg.sender.transfer(change); // send the change back to the buyer
@@ -108,18 +126,18 @@ contract Poll is Claimable {
 
         _vote.forSale = false;
         _vote.owner = msg.sender;
-        emit VoteOwnershipChanged(_voteAddr, msg.sender);
+        emit VoteOwnershipChanged(_voteAddr, seller, msg.sender);
     }
 
     /**
      * Delegates a vote to someone else.
-     * @param _voter the vote to be delegated, usually same as msg.sender
+     * @param _voteAddr the vote to be delegated, usually same as msg.sender
      * @param _newOwner address of the new owner of this vote
      */
-    function delegateVote(address _voter, address payable _newOwner) public notVoted(_voter) ownsVote(_voter) pollOpen {
-        votes[_voter].owner = _newOwner;
+    function delegateVote(address _voteAddr, address payable _newOwner) public notVoted(_voteAddr) ownsVote(_voteAddr) pollOpen {
+        votes[_voteAddr].owner = _newOwner;
 
-        emit VoteOwnershipChanged(_voter, _newOwner);
+        emit VoteOwnershipChanged(_voteAddr, msg.sender, _newOwner);
     }
 
     /**

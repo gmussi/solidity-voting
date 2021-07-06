@@ -13,16 +13,17 @@ contract PollingStation is Claimable {
     event PollCreated (address indexed creator, uint indexed pollId, address indexed pollAddr, string name);
 
     function createPoll(string memory _name, bytes32[] memory _options) public returns(uint, address) {
-        Poll poll = new Poll(_name, _options);
+        Poll _poll = new Poll(_name, _options);
                 
-        uint pollId = polls.push(poll) - 1;
+        polls.push(_poll);
+        uint pollId = polls.length - 1;
         pollByOwners[msg.sender].push(pollId);
 
-        emit PollCreated(msg.sender, pollId, address(poll), _name);
+        emit PollCreated(msg.sender, pollId, address(_poll), _name);
 
-        poll.transferOwnership(msg.sender); // why does this fail if i place right after "new"?
+        _poll.transferOwnership(msg.sender); // why does this fail if i place right after "new"?
 
-        return (pollId, address(poll));
+        return (pollId, address(_poll));
     }
 
     function closePoll(uint pollId) public onlyCreator(pollId) {
