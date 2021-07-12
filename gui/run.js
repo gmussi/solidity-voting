@@ -107,7 +107,7 @@ app.use("/api/votes/:pollAddr/:userAddr", async (req, res) => {
         let vote = await loadVote(poll, userAddr);
         addressesChecked.push(userAddr);
         let voteOwner = vote.owner === "0x0000000000000000000000000000000000000000" ? vote.address : vote.owner;
-        console.log("a", vote)
+
         if (!vote.used && userAddr.toLowerCase() === voteOwner.toLowerCase()) {
             votes.push(vote);
         }
@@ -122,12 +122,12 @@ app.use("/api/votes/:pollAddr/:userAddr", async (req, res) => {
         
         for (let event of events) {
             let voteAddr = event.returnValues.voteAddr;
-            console.log("c", event)
+
             if (addressesChecked.indexOf(voteAddr) == -1) {
                 addressesChecked.push(voteAddr);
     
                 vote = await loadVote(poll, voteAddr);
-                console.log("b", vote)
+
                 voteOwner = vote.owner === "0x0000000000000000000000000000000000000000" ? vote.address : vote.owner;
                 if (!vote.used && userAddr.toLowerCase() === voteOwner.toLowerCase()) {
                     votes.push(vote);
@@ -152,24 +152,23 @@ const loadPoll = async (pollAddr) => {
     let options = await poll.methods.getOptions().call();
     let closed = await poll.methods.closed().call();
     let owner = await poll.methods.owner().call();
-    //let voteCount = await poll.methods.getVoteCount().call();
 
     return {
-        name: name,
-        pollAddr: pollAddr,
+        name,
+        pollAddr,
         options : options.map(web3.utils.hexToAscii),
-        closed : closed,
-        owner: owner
+        closed,
+        owner
     };
 }
 
 const loadVote = async (poll, address) => {
     let {0: used, 1: forSale, 2: price, 3: owner} = await poll.methods.getVote(address).call();
     return {
-        used: used, 
-        forSale: forSale,
-        price: price,
-        owner: owner,
-        address: address
+        used, 
+        forSale,
+        price,
+        owner,
+        address
     }
 }
