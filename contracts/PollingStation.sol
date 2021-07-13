@@ -11,9 +11,10 @@ contract PollingStation is Claimable {
     mapping (address => uint[]) pollByOwners;
 
     event PollCreated (address indexed creator, uint indexed pollId, address indexed pollAddr, string name);
+    event PollClosed (address indexed pollAddr);
 
     function createPoll(string memory _name, bytes32[] memory _options) public returns(uint, address) {
-        Poll _poll = new Poll(_name, _options);
+        Poll _poll = new Poll(this, _name, _options);
                 
         polls.push(_poll);
         uint pollId = polls.length - 1;
@@ -21,14 +22,15 @@ contract PollingStation is Claimable {
 
         emit PollCreated(msg.sender, pollId, address(_poll), _name);
 
-        _poll.transferOwnership(msg.sender); // why does this fail if i place right after "new"?
+        _poll.transferOwnership(msg.sender); // why does this fail if I place right after "new"?
 
         return (pollId, address(_poll));
     }
 
-    function closePoll(uint pollId) public onlyCreator(pollId) {
-        Poll poll = polls[pollId];
-        poll.closePoll();
+    function pollClosed(Poll poll) public {
+        require(msg.sender == address(poll));
+
+        emit PollClosed(address(poll));
     }
 
     function getMyPolls() public view returns(uint[] memory) {

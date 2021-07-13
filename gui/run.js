@@ -4,7 +4,7 @@ const fs = require('fs');
 const app = express();
 
 // address of contract from 'truffle deploy'
-const POLLSTATION_ADDRESS = "0xB0f80368D6C69C5B91931DE41B62e54A851d0E0A";
+const POLLSTATION_ADDRESS = "0x0a5654Bb328Bea24A2E1787971cF7794DaC0894c";
 const POLLSTATION_ABI = JSON.parse(fs.readFileSync("../bin/contracts/PollingStation.abi"));
 const POLL_ABI = JSON.parse(fs.readFileSync("../bin/contracts/Poll.abi"));
 const ENDPOINT = "http://127.0.0.1:7545";
@@ -39,7 +39,6 @@ app.use("/api/mypolls/:address", async (req, res) => {
     for (let i = 0; i < pollIds.length; i++) {
         try { 
             let pollAddr = await pollingStation.methods.polls(parseInt(pollIds[i])).call({from: address});
-            console.log("address", pollAddr)
             
             let poll = await loadPoll(pollAddr);
             output.push(poll);
@@ -72,13 +71,13 @@ app.use("/api/poll/:pollAddr", async (req, res) => {
  * @todo Listen to events and cache this information locally for all polls
  */
 app.use("/api/votes/:pollAddr/sell", async (req, res) => {
-    let poll = new web3.eth.Contract(POLL_ABI, req.params.pollAddr);
-
+    let poll = await new web3.eth.Contract(POLL_ABI, req.params.pollAddr);
+    
     // find all votes ever put on sale
     let events = await poll.getPastEvents("VoteForSale", {
-        fromBlock: "earliest"
+        fromBlock: 1
     });
-
+    
     let votes = [];
     let addressesChecked = [];
     // check if the votes are still for sale

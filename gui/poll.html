@@ -42,7 +42,7 @@
             <div class="container">
                 <h1 id="poll_name">Loading...</h1> 
                 <p>Owner: <span id="poll_owner">Loading...</span></p>
-                <p>Poll is <strong id="poll_closed">Loading...</strong></p>
+                <p>Poll is <strong id="poll_closed">Loading...</strong> <button class="btn btn-danger" id="close_poll" onclick="closePoll();" disabled>Close poll</button></p>
                 <h2>Options</h2>
             </div>
             <div class="container" id="poll_options">
@@ -129,20 +129,9 @@
     </body>
     <script>
         const onPollEvent = async (event) => {
-            switch (event.event) {
-                case "VoteNotForSale":
-                case "VoteForSale":
-                    loadVotesForSale();
-                case "VoteOwnershipChanged":
-                    loadVotes();
-                    break;
-                case "NewVote":
-                    loadVotes();
-                    reloadVoteCount();
-                    break;
-                default:
-                    console.log("poll event", event);
-            }
+            loadVotesForSale();
+            loadVotes();
+            reloadVoteCount();
         };
 
         const reloadVoteCount = async () => {
@@ -167,7 +156,7 @@
             } else {
                 document.getElementById("selected_option").value = option;
                 
-                document.getElementById("available_votes").innerHTML = "";
+                document.getElementById("available_votes").replaceChildren();
                 for (let vote of GLOBAL.votes) {
                     let option = document.createElement("option");
                     option.innerHTML = vote.address;
@@ -225,8 +214,9 @@
         };
 
         const updateVoteButtons = () => {
+            let pollClosed = document.getElementById("poll_closed").innerHTML === "Closed";
             document.querySelectorAll('[data-vote]').forEach((button) => { 
-                button.disabled = GLOBAL.votes.length < 1; 
+                button.disabled = GLOBAL.votes.length < 1 || pollClosed; 
             })
         };
 
@@ -275,15 +265,17 @@
 
             document.getElementById("my_votes").innerHTML = "";
 
+            let pollClosed = document.getElementById("poll_closed").innerHTML === "Closed";
+
             for (let i = 0; i < votes.length; i++) {
                 let buttons = [];
                 if (votes[i].used) { // if vote is used, no action can be performed
                     buttons.push(`<button type="button" class="btn btn-secondary" disabled>Vote used</button>`);
                 } else if (votes[i].forSale) { // while vote is for sale, user can only cancel the sale
-                    buttons.push(`<button type="button" class="btn btn-danger" onclick="stopSellingVote('${votes[i].address}');">Stop selling</button>`);
+                    buttons.push(`<button type="button" class="btn btn-danger" onclick="stopSellingVote('${votes[i].address}');" ${pollClosed ? "disabled" : ""}>Stop selling</button>`);
                 } else { // if vote not used and currently for sale, user can sell, delegate or use in polls
-                    buttons.push(`<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#sell-modal" data-bs-address="${votes[i].address}">Sell vote</button>`);
-                    buttons.push(`<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#delegate-modal" data-bs-address="${votes[i].address}">Delegate</button>`);
+                    buttons.push(`<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#sell-modal" data-bs-address="${votes[i].address}" ${pollClosed ? "disabled" : ""}>Sell vote</button>`);
+                    buttons.push(`<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#delegate-modal" data-bs-address="${votes[i].address}" ${pollClosed ? "disabled" : ""}>Delegate</button>`);
                     GLOBAL.votes.push(votes[i]);
                 }
                 
@@ -304,6 +296,15 @@
             updateVoteButtons();
         }
 
+        const closePoll = () => {
+            GLOBAL.poll.methods.closePoll().send({
+                from: GLOBAL.myaddress
+            }).then(() => {
+                document.getElementById("poll_closed").innerHTML = "Closed";
+                document.getElementById("close_poll").disabled = true;
+            });
+        };
+
         const loadPoll = async () =>  {
             GLOBAL.pollAddr = window.location.search.substr(9);
             GLOBAL.poll = new web3.eth.Contract(GLOBAL.POLL_ABI, GLOBAL.pollAddr);
@@ -315,6 +316,7 @@
 
             document.getElementById("poll_name").innerHTML = poll.name;
             document.getElementById("poll_closed").innerHTML = poll.closed ? "Closed" : "Open";
+            document.getElementById("close_poll").disabled = poll.closed || poll.owner.toLowerCase() !== GLOBAL.myaddress.toLowerCase();
             document.getElementById("poll_owner").innerHTML = poll.owner;
 
             GLOBAL.options = poll.options;

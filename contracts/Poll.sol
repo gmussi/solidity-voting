@@ -1,13 +1,15 @@
 pragma solidity >=0.5.16;
 
 import "@gmussi-contracts/gmussi-claimable/contracts/Claimable.sol";
-
+import "./PollingStation.sol";
 /**
  * A poll is a contract that stores potential options to vote on, as well as which addresses have voted already.
  * Addresses can vote on the poll until the poll owner closes the contract.
  * Addresses can also put their votes for sale as long as they have not voted yet.
  */
 contract Poll is Claimable {
+    PollingStation private pollingStation;
+
     struct Vote {
         bool used;
         bool forSale;
@@ -52,8 +54,10 @@ contract Poll is Claimable {
     /**
      * A poll requires a name and a bytes32 for each option.
      */
-    constructor(string memory _name, bytes32[] memory _options) public {
+    constructor(PollingStation _pollingStation, string memory _name, bytes32[] memory _options) public {
         require(_options.length > 0);
+
+        pollingStation = _pollingStation;
 
         name = _name;
         for (uint i = 0; i < _options.length; i++) {
@@ -145,6 +149,8 @@ contract Poll is Claimable {
      */
     function closePoll() public pollOpen onlyOwner {
         closed = true;
+
+        pollingStation.pollClosed(this);
 
         emit PollClosed(address(this));
     }
