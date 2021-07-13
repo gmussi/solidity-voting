@@ -72,26 +72,26 @@ contract("PollingStation", async (accounts) => {
     });
 
     context("Voting", async () => {
-        it ("Should allow an address to vote, but only once", async () => {
+        it("Should allow an address to vote, but only once", async () => {
             let poll = await createPoll();
 
-            await poll.vote(options[0], fernando, {from: fernando}); // voting first time should work
-            utils.shouldThrow(poll.vote(options[1], fernando, {from: fernando}), "Voting second time must not work");
+            await poll.vote(0, fernando, {from: fernando}); // voting first time should work
+            utils.shouldThrow(poll.vote(1, fernando, {from: fernando}), "Voting second time must not work");
 
         });
         it ("Should allow an address to vote, only if owning the vote", async () => {
             let poll = await createPoll();
 
-            await poll.vote(options[0], fernando, {from: fernando}); // voting in his name should work
-            utils.shouldThrow(poll.vote(options[1], voteSeller, {from: voteBuyer}), "Voting for someone should not work here"); // voting for someone else should not work (without selling the vote first)
+            await poll.vote(0, fernando, {from: fernando}); // voting in his name should work
+            utils.shouldThrow(poll.vote(1, voteSeller, {from: voteBuyer}), "Voting for someone should not work here"); // voting for someone else should not work (without selling the vote first)
         });
         it ("Should count votes correctly", async () => {
             let poll = await createPoll();
 
-            await poll.vote(options[0], guilherme, {from: guilherme}); // vote option 1
-            await poll.vote(options[0], fernando, {from: fernando}); // vote option 1
-            await poll.vote(options[0], voteSeller, {from: voteSeller}); // vote option 1
-            await poll.vote(options[1], voteBuyer, {from: voteBuyer}); // vote option 2
+            await poll.vote(0, guilherme, {from: guilherme}); // vote option 1
+            await poll.vote(0, fernando, {from: fernando}); // vote option 1
+            await poll.vote(0, voteSeller, {from: voteSeller}); // vote option 1
+            await poll.vote(0, voteBuyer, {from: voteBuyer}); // vote option 2
 
             //let result = await poll.countVotes();
             //console.log("RESULT", result);
@@ -110,13 +110,13 @@ contract("PollingStation", async (accounts) => {
             let poll = await createPoll();
 
             await poll.delegateVote(luciano, fernando, {from: luciano}); // should work fine: luciano delegates to fernando
-            utils.shouldThrow(poll.vote(luciano, {from: luciano})); // luciano cannot vote as fernando owns his vote now
+            utils.shouldThrow(poll.vote(1, luciano, {from: luciano})); // luciano cannot vote as fernando owns his vote now
         });
         it ("Should allow new owner to vote after delegation", async () => {
             let poll = await createPoll();
 
             await poll.delegateVote(luciano, fernando, {from: luciano}); // should work fine: luciano delegates to fernando
-            await poll.vote(options[0], luciano, {from: fernando}); // should work fine: fernando owns the vote from luciano
+            await poll.vote(0, luciano, {from: fernando}); // should work fine: fernando owns the vote from luciano
         });
     });
 
@@ -154,8 +154,8 @@ contract("PollingStation", async (accounts) => {
             await poll.sellVote(voteSeller, 5000, {from: voteSeller}); // voteSeller puts vote for sale
             await poll.buysVote(voteSeller, {from: voteBuyer, value: 5000}); // voteBuyer buys vote from voteSeller
 
-            utils.shouldThrow(poll.vote(options[1], voteSeller, {from: voteSeller}), "voteSeller doesnt own the vote anymore"); // should fail as voteSeller sold his vote and can no longer vote with it
-            await poll.vote(options[1], voteSeller, {from: voteBuyer}); // should work as voteBuyer bought vote from voteSeller
+            utils.shouldThrow(poll.vote(1, voteSeller, {from: voteSeller}), "voteSeller doesnt own the vote anymore"); // should fail as voteSeller sold his vote and can no longer vote with it
+            await poll.vote(1, voteSeller, {from: voteBuyer}); // should work as voteBuyer bought vote from voteSeller
         });
         
         it ("Should give change when buying vote", async () => {

@@ -1,4 +1,5 @@
-pragma solidity >=0.5.16;
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.8.6;
 
 import "@gmussi-contracts/gmussi-claimable/contracts/Claimable.sol";
 import "./PollingStation.sol";
@@ -54,7 +55,7 @@ contract Poll is Claimable {
     /**
      * A poll requires a name and a bytes32 for each option.
      */
-    constructor(PollingStation _pollingStation, string memory _name, bytes32[] memory _options) public {
+    constructor(PollingStation _pollingStation, string memory _name, bytes32[] memory _options) {
         require(_options.length > 0);
 
         pollingStation = _pollingStation;
@@ -125,11 +126,11 @@ contract Poll is Claimable {
         seller.transfer(_vote.price); // sends the price value to the seller
 
         if (change > 0) {
-            msg.sender.transfer(change); // send the change back to the buyer
+            payable(msg.sender).transfer(change); // send the change back to the buyer
         }
 
         _vote.forSale = false;
-        _vote.owner = msg.sender;
+        _vote.owner = payable(msg.sender);
         emit VoteOwnershipChanged(_voteAddr, seller, msg.sender);
     }
 
