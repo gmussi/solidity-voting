@@ -69,6 +69,13 @@ contract("PollingStation", async (accounts) => {
             assert.isTrue(result.includes(pollId), "Poll id did not match"); // ensure poll created is here 
         });
 
+        it ("Should count polls correctly", async () => {
+            let oldCount = await pollStation.getCount();
+            await createPoll();
+            let newCount = await pollStation.getCount();
+            assert.equal(newCount.sub(oldCount).toNumber(), 1, "Count should have increased by 1");
+        });
+
     });
 
     context("Voting", async () => {
@@ -91,10 +98,11 @@ contract("PollingStation", async (accounts) => {
             await poll.vote(0, guilherme, {from: guilherme}); // vote option 1
             await poll.vote(0, fernando, {from: fernando}); // vote option 1
             await poll.vote(0, voteSeller, {from: voteSeller}); // vote option 1
-            await poll.vote(0, voteBuyer, {from: voteBuyer}); // vote option 2
+            await poll.vote(1, voteBuyer, {from: voteBuyer}); // vote option 2
 
-            //let result = await poll.countVotes();
-            //console.log("RESULT", result);
+            let result = await poll.getVoteCount();
+            assert.equal(result[0], 3, "Should have 3 votes.");
+            assert.equal(result[1], 1, "Should have 1 vote.")
         });
     });
 
@@ -182,6 +190,20 @@ contract("PollingStation", async (accounts) => {
             let voteBuyer_difference = web3.utils.toBN(voteBuyer_initialBalance).sub(web3.utils.toBN(voteBuyer_finalBalance));
 
             assert.equal(voteBuyer_difference.cmp(totalPaid), 0, "Change is wrong"); // account should be only 0.50 less plus the gas fee
+        });
+
+        it ("Should allow user to stop selling vote", async () => {
+            let poll = await createPoll();
+
+            // put vote for sale and ensure it is for sale
+            await poll.sellVote(voteSeller, 5000, {from: voteSeller}); // voteSeller puts vote for sale
+            let {1: forSaleBefore} = await poll.getVote(voteSeller, {from: voteSeller}); // obtain current state of vote
+            assert.isTrue(forSaleBefore, "Vote should be for sale");
+
+
+            await poll.stopSelling(voteSeller, {from: voteSeller}); // voteSeller stops selling vote
+            let {1: forSaleAfter} = await poll.getVote(voteSeller, {from: voteSeller}); // obtain current state of vote
+            assert.isFalse(forSaleAfter, "Vote should not be for sale");
         });
     });
 
