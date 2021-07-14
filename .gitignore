@@ -13,3 +13,4 @@ build/contracts/Migrations.json
 build/contracts/Ownable.json
 .vscode/settings.json
 node_modules
+.env

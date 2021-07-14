@@ -33,7 +33,13 @@
   "homepage": "https://github.com/gmussi/solidity-voting#readme",
   "dependencies": {
     "@gmussi-contracts/gmussi-claimable": "1.2.0",
+    "@truffle/hdwallet-provider": "^1.4.1",
+    "bip39": "^3.0.4",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "web3": "^1.4.0"
+  },
+  "devDependencies": {
+    "solidity-coverage": "^0.7.16"
   }
 }

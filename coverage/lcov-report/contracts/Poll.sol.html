@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts\Poll.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> Poll.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">82.5% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>33/40</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">87.5% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>14/16</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">78.57% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>11/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">84.44% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>38/45</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26×</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">34×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26×</span>
+<span class="cline-any cline-yes">17×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: MIT
+pragma solidity &gt;=0.8.6;
+&nbsp;
+import "@gmussi-contracts/gmussi-claimable/contracts/Claimable.sol";
+import "./PollingStation.sol";
+/**
+ * A poll is a contract that stores potential options to vote on, as well as which addresses have voted already.
+ * Addresses can vote on the poll until the poll owner closes the contract.
+ * Addresses can also put their votes for sale as long as they have not voted yet.
+ */
+contract Poll is Claimable {
+    PollingStation private pollingStation;
+&nbsp;
+    struct Vote {
+        bool used;
+        bool forSale;
+        uint price;
+        address payable owner;
+    }
+&nbsp;
+    string public name; // name of this poll - is this necessary?
+&nbsp;
+    bytes32[] public options; // options that can be voted on
+    uint[] public voteCounts; // number of votes for each option
+&nbsp;
+    mapping(address =&gt; Vote) private votes; // stores the votes of everyone
+&nbsp;
+    bool public closed; // stores if the polling is still accepting votes
+&nbsp;
+    /**
+     * Event triggered every time a new vote is given in this poll
+     */
+    event NewVote (bytes32 indexed option, address indexed voteAddr, address indexed user);
+&nbsp;
+    /**
+     * Event triggered when a vote is put for sale
+     */
+    event VoteForSale(address indexed voteAddr, uint indexed price, address indexed user);
+&nbsp;
+    /**
+     * Event triggered when a vote is no longer for sale
+     */
+    event VoteNotForSale(address indexed voteAddr, address indexed user);
+&nbsp;
+    /**
+     * Event triggered when a vote is sold 
+     */
+    event VoteOwnershipChanged(address indexed voteAddr, address indexed seller, address indexed buyer);
+&nbsp;
+    /**
+     * Event triggered when the poll is closed
+     */
+    event PollClosed (address indexed pollAddr);
+&nbsp;
+    /**
+     * A poll requires a name and a bytes32 for each option.
+     */
+    constructor(PollingStation _pollingStation, string memory _name, bytes32[] memory _options) {
+        require(_options.length &gt; 0);
+&nbsp;
+        pollingStation = _pollingStation;
+&nbsp;
+        name = _name;
+        for (uint i = 0; i &lt; _options.length; i++) {
+            options.push(_options[i]);
+            voteCounts.push(0);
+        }
+    }
+&nbsp;
+    /**
+     * Stores a vote from the message sender. 
+     * Each address can vote only once and only as long as the poll is not closed.
+     * Each address can also sell their voting rights for others, which allows the buyer to vote.
+     * @param _optionIndex a bytes32 representing the option to vote.
+     * @dev Refer to `options` property  
+     * @param _voteAddr address of the voter this vote refers to. Message sender must own that right
+     */
+    function vote(uint _optionIndex, address _voteAddr) public notVoted(_voteAddr) ownsVote(_voteAddr) pollOpen {
+        voteCounts[_optionIndex]++;
+        votes[_voteAddr].used = true;
+&nbsp;
+        emit NewVote(options[_optionIndex], _voteAddr, msg.sender);
+    } 
+&nbsp;
+    /**
+     * Puts a vote for sale for a specified price.
+     * @param _voteAddr The vote to be put for sale. Msg.owner must own this vote.
+     * 
+     */
+    function sellVote(address _voteAddr, uint price) public notVoted(_voteAddr) ownsVote(_voteAddr) pollOpen {
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(price &gt; 0, "Price must be higher than 0");
+&nbsp;
+        Vote storage _vote = votes[_voteAddr];
+        _vote.price = price;
+        _vote.forSale = true;
+&nbsp;
+        emit VoteForSale(_voteAddr, price, msg.sender);
+    }
+&nbsp;
+    /**
+     * Makes a vote no longer available for sale
+     * @param _voteAddr The vote address currently for sale
+     */
+<span class="fstat-no" title="function not covered" >    function stopSelling(address _voteAddr) public notVoted(_voteAddr) ownsVote(_voteAddr) forSale(_voteAddr) pollOpen {</span>
+<span class="cstat-no" title="statement not covered" >        Vote storage _vote = votes[_voteAddr];</span>
+<span class="cstat-no" title="statement not covered" >        _vote.price = 0</span>;
+<span class="cstat-no" title="statement not covered" >        _vote.forSale = false</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        emit VoteNotForSale(_voteAddr, msg.sender);</span>
+    }
+&nbsp;
+    /**
+     * Buys a vote for sale. Enough funds must be transferred to this method. 
+     * More funds than necessary will be refunded.
+     * @dev This method only works if the vote has not been used AND is for sale 
+     * @param _voteAddr the address of the seller whose vote is intended to buy
+     */
+    function buysVote(address payable _voteAddr) public payable notVoted(_voteAddr) forSale(_voteAddr) pollOpen {
+        Vote storage _vote = votes[_voteAddr];
+        address payable seller = _vote.owner;
+&nbsp;
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(msg.value &gt;= _vote.price, "Not enough funds transferred");
+        
+        uint change = msg.value - _vote.price;
+&nbsp;
+        seller.transfer(_vote.price); // sends the price value to the seller
+&nbsp;
+        if (change &gt; 0) {
+            payable(msg.sender).transfer(change); // send the change back to the buyer
+        }
+&nbsp;
+        _vote.forSale = false;
+        _vote.owner = payable(msg.sender);
+        emit VoteOwnershipChanged(_voteAddr, seller, msg.sender);
+    }
+&nbsp;
+    /**
+     * Delegates a vote to someone else.
+     * @param _voteAddr the vote to be delegated, usually same as msg.sender
+     * @param _newOwner address of the new owner of this vote
+     */
+    function delegateVote(address _voteAddr, address payable _newOwner) public notVoted(_voteAddr) ownsVote(_voteAddr) pollOpen {
+        votes[_voteAddr].owner = _newOwner;
+&nbsp;
+        emit VoteOwnershipChanged(_voteAddr, msg.sender, _newOwner);
+    }
+&nbsp;
+    /**
+     * Closes the poll. This action is irreversible and can only be performed once.
+     */
+    function closePoll() public pollOpen onlyOwner {
+        closed = true;
+&nbsp;
+        pollingStation.pollClosed(this);
+&nbsp;
+        emit PollClosed(address(this));
+    }
+&nbsp;
+    /**
+     * Function modifier that checks if the poll is still opened.
+     */
+    modifier pollOpen () {
+        require(!closed);
+        _;
+    }
+&nbsp;
+    /**
+     * Function modifier that checks if the message sender has already voted in this poll
+     */
+    modifier notVoted(address _voter) {
+        require(!votes[_voter].used);
+        _;
+    }
+&nbsp;
+    /**
+     * Function modifier that checks if the address trying to vote owns that vote 
+     */
+    modifier ownsVote(address _voter) {
+        require((votes[_voter].owner == address(0) &amp;&amp; _voter == msg.sender) || votes[_voter].owner == msg.sender);
+        _;
+    } 
+&nbsp;
+    /**
+     * Function modifier that checks if a vote is for sale
+     */
+    modifier forSale(address _vote) {
+        require(votes[_vote].forSale);
+        _;
+    }
+&nbsp;
+    function getOptions() public view returns (bytes32[] memory) {
+        return options;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getVoteCount() public view returns(uint[] memory) {</span>
+<span class="cstat-no" title="statement not covered" >        return voteCounts;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getVote(address _voter) public view returns(bool, bool, uint, address) {</span>
+<span class="cstat-no" title="statement not covered" >        Vote storage _vote = votes[_voter];</span>
+<span class="cstat-no" title="statement not covered" >        return (_vote.used, _vote.forSale, _vote.price, _vote.owner);</span>
+    }
+ }</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Jul 14 2021 15:00:43 GMT+0200 (Central European Summer Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

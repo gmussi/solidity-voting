@@ -4,7 +4,7 @@ const fs = require('fs');
 const app = express();
 
 // address of contract from 'truffle deploy'
-const POLLSTATION_ADDRESS = "0x0a5654Bb328Bea24A2E1787971cF7794DaC0894c";
+const POLLSTATION_ADDRESS = "0xFa57F7A3E9D1E2a11E3eb7a7E918d84597A3e891";
 const POLLSTATION_ABI = JSON.parse(fs.readFileSync("../bin/contracts/PollingStation.abi"));
 const POLL_ABI = JSON.parse(fs.readFileSync("../bin/contracts/Poll.abi"));
 const ENDPOINT = "http://127.0.0.1:7545";
