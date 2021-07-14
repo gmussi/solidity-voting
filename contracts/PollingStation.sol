@@ -38,11 +38,6 @@ contract PollingStation is Claimable {
         return pollByOwners[msg.sender];
     }
 
-    modifier onlyCreator (uint pollId) {
-        require(polls[pollId].owner() == msg.sender);
-        _;
-    }
-
     function getCount() public view returns(uint count) {
         return polls.length;
     }
