@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "compile": "truffle compile-all",
-    "test": "truffle test",
+    "test": "truffle run coverage",
     "gui": "node gui/run.js",
     "publish": "npm publish --access=public"
   },
