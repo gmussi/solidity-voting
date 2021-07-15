@@ -2,19 +2,32 @@ const express = require("express");
 const Web3 = require("web3");
 const fs = require('fs');
 const app = express();
+// TODO: Use a default "development" when var not set
+require('dotenv').config({ path: `./.env.${process.env.NODE_ENV || "development"}`});
+
+const findAbi = (abi) => {
+    for (let path of ["../bin/contracts", "./bin/contracts", ".", "./contracts"]) {
+        let file = `${path}/${abi}.abi`;
+        if (fs.existsSync(file)) {
+            return JSON.parse(fs.readFileSync(file));
+        }
+    }
+};
 
 // address of contract from 'truffle deploy'
-const POLLSTATION_ADDRESS = "0xFa57F7A3E9D1E2a11E3eb7a7E918d84597A3e891";
-const POLLSTATION_ABI = JSON.parse(fs.readFileSync("../bin/contracts/PollingStation.abi"));
-const POLL_ABI = JSON.parse(fs.readFileSync("../bin/contracts/Poll.abi"));
-const ENDPOINT = "http://127.0.0.1:7545";
+const POLLSTATION_ABI = findAbi("PollingStation");
+const POLL_ABI = findAbi("Poll");
+const ENDPOINT = process.env.ENDPOINT_URL;
+const POLLSTATION_ADDRESS = process.env.POLLSTATION_ADDRESS;
+
+console.log(ENDPOINT, POLLSTATION_ADDRESS)
 
 const provider = new Web3.providers.HttpProvider(ENDPOINT);
 const web3 = new Web3(provider);
 const pollingStation = new web3.eth.Contract(POLLSTATION_ABI, POLLSTATION_ADDRESS);
 
 // serve html files
-app.use(express.static("."));
+app.use(express.static(__dirname));
 
 // serve abi files
 app.use("/config", (req, res) => {
@@ -170,4 +183,5 @@ const loadVote = async (poll, address) => {
         owner,
         address
     }
-}
+};
+

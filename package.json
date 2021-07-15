@@ -9,7 +9,7 @@
   "scripts": {
     "compile": "truffle compile-all",
     "test": "truffle run coverage",
-    "gui": "node gui/run.js",
+    "server": "nodemon gui/server.js",
     "publish": "npm publish --access=public"
   },
   "repository": {
@@ -37,6 +37,7 @@
     "bip39": "^3.0.4",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "nodemon": "^2.0.12",
     "web3": "^1.4.0"
   },
   "devDependencies": {
