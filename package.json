@@ -10,7 +10,9 @@
     "compile": "truffle compile-all",
     "test": "truffle run coverage",
     "server": "nodemon gui/server.js",
-    "publish": "npm publish --access=public"
+    "publish": "npm publish --access=public",
+    "dockerize": "docker build -t solidity-voting-server .",
+    "dockerized-server": "docker run -it -p 3000:3000 --env-file .\\.env.development --name solidity_voting solidity-voting-server"
   },
   "repository": {
     "type": "git",
